@@ -1,0 +1,498 @@
+# Celestillion daily questions
+#
+# Each question starts with "? " followed by the question text.
+# Then one line per tier: refill (15), spinner (30), pufferfish (60), seeker (85), celestillion (100).
+# Separate answers with commas. Put other accepted spellings of the same answer after | (no commas inside answers).
+# Common answers belong in refill; the most obscure correct answers belong in celestillion.
+# Five questions are used per day, in the order below. When the list runs out it starts again from the top.
+# Lines starting with # are ignored.
+
+? Name a moon in our solar system
+refill: moon|the moon|luna
+spinner: titan, europa
+pufferfish: io, ganymede, callisto, phobos, deimos
+seeker: enceladus, triton, charon, miranda, oberon, titania
+celestillion: hyperion, iapetus, rhea, dione, tethys, mimas, ariel, umbriel, nereid, proteus, amalthea, himalia, metis, thebe, adrastea, pan, janus, epimetheus, phoebe, puck, despina, larissa, galatea, nix, hydra, kerberos, styx
+
+? Name a country in Africa
+refill: egypt, nigeria, south africa, kenya
+spinner: morocco, ethiopia, ghana, algeria, somalia, sudan
+pufferfish: libya, tunisia, uganda, tanzania, zimbabwe, madagascar, senegal, cameroon, angola, rwanda, congo|democratic republic of the congo|dr congo|drc|republic of the congo
+seeker: mali, niger, chad, zambia, botswana, namibia, mozambique, ivory coast|cote d'ivoire, sierra leone, liberia, mauritania, malawi, south sudan, eritrea, burkina faso, guinea, benin, togo, gabon, central african republic, lesotho, eswatini|swaziland, djibouti, burundi, gambia|the gambia
+celestillion: cape verde|cabo verde, comoros, sao tome and principe, seychelles, equatorial guinea, guinea-bissau, mauritius
+
+? Name a chemical element
+refill: oxygen, hydrogen, carbon, gold, iron
+spinner: nitrogen, helium, silver, copper, sodium, calcium
+pufferfish: lead, zinc, aluminum|aluminium, uranium, neon, potassium, magnesium, chlorine, sulfur|sulphur, mercury, platinum, tin, titanium, lithium
+seeker: argon, cobalt, nickel, iodine, fluorine, plutonium, radon, boron, silicon, phosphorus, chromium, tungsten, krypton, xenon, radium, arsenic, bismuth, manganese
+celestillion: osmium, iridium, palladium, rhodium, ruthenium, tellurium, selenium, gallium, germanium, indium, cadmium, antimony, barium, strontium, cesium|caesium, rubidium, francium, beryllium, scandium, vanadium, zirconium, niobium, molybdenum, technetium, hafnium, tantalum, rhenium, thallium, polonium, astatine, actinium, thorium, protactinium, neptunium, americium, curium, einsteinium, fermium, nobelium, lanthanum, cerium, neodymium, europium, gadolinium, ytterbium, yttrium, lutetium, erbium, holmium, dysprosium, terbium, samarium, promethium, praseodymium, thulium, berkelium, californium, mendelevium, lawrencium, rutherfordium, dubnium, seaborgium, bohrium, hassium, meitnerium, darmstadtium, roentgenium, copernicium, nihonium, flerovium, moscovium, livermorium, tennessine, oganesson
+
+? Name a play by William Shakespeare
+refill: romeo and juliet, hamlet, macbeth
+spinner: othello, king lear, a midsummer night's dream|midsummer night's dream
+pufferfish: the tempest, julius caesar, much ado about nothing, twelfth night, the merchant of venice
+seeker: the taming of the shrew, as you like it, richard iii|richard the third, antony and cleopatra, henry v|henry the fifth, the winter's tale, the comedy of errors
+celestillion: titus andronicus, timon of athens, pericles, cymbeline, troilus and cressida, measure for measure, all's well that ends well, love's labour's lost|love's labor's lost, the two gentlemen of verona, the merry wives of windsor, king john, richard ii|richard the second, henry iv|henry the fourth, henry vi|henry the sixth, henry viii|henry the eighth, coriolanus, the two noble kinsmen
+
+? Name a breed of dog
+refill: labrador|labrador retriever|lab, golden retriever, german shepherd, poodle, bulldog
+spinner: beagle, chihuahua, pug, husky|siberian husky, dachshund, rottweiler, boxer
+pufferfish: corgi, shih tzu, border collie, great dane, doberman, pomeranian, yorkshire terrier|yorkie, french bulldog, dalmatian, pit bull|pitbull, maltese, cocker spaniel, greyhound, bichon frise
+seeker: saint bernard|st bernard, bernese mountain dog, akita, shiba inu, samoyed, newfoundland, basset hound, bloodhound, whippet, weimaraner, vizsla, australian shepherd, schnauzer, jack russell terrier|jack russell, cavalier king charles spaniel, mastiff, bull terrier, chow chow, sheltie|shetland sheepdog
+celestillion: basenji, xoloitzcuintli|xolo, komondor, puli, borzoi, saluki, otterhound, lagotto romagnolo, kooikerhondje, azawakh, bergamasco, leonberger, affenpinscher, schipperke, keeshond, papillon, pharaoh hound, rhodesian ridgeback, lhasa apso, tibetan mastiff
+
+? Name a musical instrument
+refill: guitar, piano, drums|drum, violin
+spinner: flute, trumpet, saxophone|sax, cello, bass|bass guitar
+pufferfish: clarinet, harp, ukulele, trombone, keyboard, harmonica, tuba, banjo, accordion, xylophone
+seeker: oboe, bassoon, french horn|horn, viola, mandolin, bagpipes, tambourine, triangle, organ, piccolo, double bass, sitar, harpsichord, recorder, synthesizer
+celestillion: theremin, hurdy-gurdy, didgeridoo, celesta, glockenspiel, marimba, cajon, oud, erhu, koto, shamisen, balalaika, bouzouki, dulcimer, zither, kalimba, contrabassoon, euphonium, sousaphone, ocarina, lute, shakuhachi, tabla, steelpan|steel drum, handpan|hang drum
+
+? Name a fruit
+refill: apple, banana, orange, strawberry, grape|grapes
+spinner: mango, pineapple, watermelon, peach, pear, cherry|cherries, blueberry|blueberries, lemon
+pufferfish: kiwi, plum, raspberry, coconut, lime, grapefruit, papaya, pomegranate, apricot, cantaloupe, avocado, blackberry, tomato
+seeker: fig, date, nectarine, cranberry, passion fruit, guava, lychee|litchi, dragon fruit, tangerine, clementine, persimmon, star fruit|carambola, gooseberry, honeydew
+celestillion: durian, rambutan, mangosteen, jackfruit, kumquat, quince, loquat, feijoa, salak, longan, soursop, cherimoya, tamarind, ackee, jabuticaba, medlar, pawpaw, yuzu, ugli fruit, elderberry, mulberry, boysenberry
+
+? Name a U.S. state
+refill: california, texas, florida, new york
+spinner: ohio, washington, arizona, georgia, colorado, hawaii, alaska, illinois, michigan, nevada
+pufferfish: oregon, utah, virginia, pennsylvania, new jersey, massachusetts, tennessee, north carolina, louisiana, minnesota, kentucky, alabama
+seeker: idaho, montana, wyoming, iowa, kansas, nebraska, oklahoma, arkansas, mississippi, missouri, wisconsin, indiana, south carolina, maryland, connecticut, maine, new mexico, west virginia
+celestillion: north dakota, south dakota, vermont, new hampshire, rhode island, delaware
+
+? Name a Greek god, goddess, or Titan
+refill: zeus, poseidon, hades, aphrodite, athena
+spinner: apollo, ares, hermes, hera, artemis
+pufferfish: dionysus, hephaestus, demeter, persephone, eros, nike, gaia, atlas, prometheus
+seeker: hestia, cronus|kronos, nyx, helios, selene, eos, pan, hecate, iris, nemesis, morpheus, hypnos, thanatos, tyche, rhea, uranus|ouranos
+celestillion: asclepius, hebe, eris, eileithyia, harmonia, priapus, aeolus, boreas, zephyrus, notus, eurus, triton, nereus, proteus, pontus, erebus, chaos, phanes, ananke, metis, themis, mnemosyne, hyperion, oceanus, tethys, phoebe, coeus, crius, iapetus, theia, hemera, aether, deimos, phobos, enyo
+
+? Name a color
+refill: red, blue, green, yellow, purple, orange, black, white, pink
+spinner: brown, gray|grey, violet, turquoise, gold, silver
+pufferfish: magenta, teal, maroon, navy, beige, cyan, indigo, lavender, crimson, scarlet, coral, olive, lime, tan, ivory
+seeker: chartreuse, burgundy, mauve, periwinkle, ochre|ocher, sepia, taupe, aquamarine, amber, fuchsia, khaki, salmon, peach, mint, emerald, sapphire, ruby, cerulean, vermilion, plum
+celestillion: puce, gamboge, coquelicot, viridian, celadon, wenge, smaragdine, xanadu, zaffre, glaucous, heliotrope, isabelline, perse, smalt, cerise, carmine, cinnabar, ecru, sinopia, fulvous, aureolin, eigengrau
+
+? Name a bone in the human body
+refill: skull, femur, rib|ribs, spine|backbone
+spinner: tibia, fibula, humerus, pelvis, jaw|jawbone, kneecap|patella
+pufferfish: radius, ulna, clavicle|collarbone, sternum|breastbone, scapula|shoulder blade, vertebra|vertebrae, mandible, coccyx|tailbone
+seeker: cranium, sacrum, carpals, metacarpals, tarsals, metatarsals, phalanges, maxilla, ilium|hip bone, ischium
+celestillion: stapes|stirrup, incus|anvil, malleus|hammer, hyoid, scaphoid, lunate, triquetrum, pisiform, trapezium, trapezoid, capitate, hamate, talus, calcaneus|heel bone, navicular, cuboid, cuneiform, sphenoid, ethmoid, zygomatic|cheekbone, vomer, lacrimal, palatine, occipital, parietal, temporal, frontal, nasal, atlas, axis, pubis
+
+? Name a vegetable
+refill: carrot, broccoli, potato, lettuce, onion, corn
+spinner: spinach, cucumber, pepper|bell pepper, peas|pea, celery, cabbage, cauliflower, garlic, green beans
+pufferfish: zucchini|courgette, asparagus, kale, eggplant|aubergine, mushroom, sweet potato, pumpkin, radish, beet|beetroot, squash, brussels sprouts
+seeker: artichoke, leek, parsnip, turnip, okra, bok choy, arugula|rocket, endive, fennel, rutabaga|swede, chard|swiss chard, shallot, watercress, edamame, yam
+celestillion: kohlrabi, salsify, jicama, celeriac, romanesco, sunchoke|jerusalem artichoke, daikon, taro, cassava|yuca, chayote, fiddlehead, samphire, mizuna, tatsoi, radicchio, burdock, lotus root, gai lan|kai lan, cardoon, oca
+
+? Name a programming language
+refill: python, java, javascript, c, c++
+spinner: c#|c sharp, ruby, php, swift, sql, typescript, go|golang
+pufferfish: rust, kotlin, r, perl, scala, matlab, bash|shell, assembly, lua, dart
+seeker: haskell, fortran, cobol, lisp, pascal, objective-c, julia, elixir, erlang, clojure, f#|f sharp, groovy, visual basic, scratch, prolog, basic
+celestillion: ocaml, ada, smalltalk, forth, apl, zig, nim, crystal, racket, scheme, elm, idris, agda, coq, simula, algol, logo, tcl, d, vala, hack, pony, malbolge
+
+? Name a famous painter
+refill: leonardo da vinci|da vinci|leonardo, vincent van gogh|van gogh, pablo picasso|picasso, michelangelo
+spinner: claude monet|monet, salvador dali|dali, frida kahlo|kahlo, rembrandt, andy warhol|warhol
+pufferfish: georgia o'keeffe|o'keeffe, jackson pollock|pollock, edvard munch|munch, henri matisse|matisse, raphael, johannes vermeer|vermeer, gustav klimt|klimt, paul cezanne|cezanne, pierre-auguste renoir|renoir
+seeker: edgar degas|degas, caravaggio, sandro botticelli|botticelli, rene magritte|magritte, wassily kandinsky|kandinsky, mark rothko|rothko, francisco goya|goya, edward hopper|hopper, j m w turner|turner, diego rivera|rivera, paul gauguin|gauguin, georges seurat|seurat, joan miro|miro, banksy, keith haring|haring, jean-michel basquiat|basquiat, roy lichtenstein|lichtenstein
+celestillion: hieronymus bosch|bosch, pieter bruegel|bruegel|brueghel, jan van eyck|van eyck, albrecht durer|durer, el greco, titian, giotto, artemisia gentileschi|gentileschi, egon schiele|schiele, amedeo modigliani|modigliani, caspar david friedrich, hokusai|katsushika hokusai, piet mondrian|mondrian, kazimir malevich|malevich, hilma af klint, yayoi kusama|kusama, mary cassatt|cassatt, berthe morisot|morisot, john singer sargent|sargent, tintoretto, diego velazquez|velazquez
+
+? Name a sport played with a ball
+refill: soccer|football, basketball, baseball, tennis, golf
+spinner: volleyball, american football, rugby, cricket, bowling, softball
+pufferfish: hockey|field hockey, table tennis|ping pong, handball, water polo, dodgeball, lacrosse, squash
+seeker: polo, kickball, pickleball, racquetball, netball, billiards|pool|snooker, croquet, bocce, wiffle ball, futsal, beach volleyball
+celestillion: sepak takraw|takraw, jai alai, hurling, gaelic football, pelota, korfball, goalball, bandy, roque, pesapallo, fistball, rounders, shinty, cuju, tchoukball, kin-ball, petanque
+
+? Name an ocean or sea
+refill: pacific|pacific ocean, atlantic|atlantic ocean, indian ocean|indian, arctic|arctic ocean
+spinner: mediterranean|mediterranean sea, southern ocean|antarctic ocean, caribbean|caribbean sea, red sea, dead sea
+pufferfish: black sea, caspian sea|caspian, north sea, baltic sea|baltic, south china sea, arabian sea, bering sea, sea of japan|east sea, coral sea
+seeker: adriatic sea|adriatic, aegean sea|aegean, sargasso sea|sargasso, tasman sea|tasman, yellow sea, irish sea, ionian sea, east china sea, philippine sea, barents sea, labrador sea, weddell sea, ross sea, sea of okhotsk|okhotsk, andaman sea
+celestillion: tyrrhenian sea, ligurian sea, celtic sea, kara sea, laptev sea, chukchi sea, beaufort sea, sulu sea, celebes sea, banda sea, arafura sea, timor sea, salish sea, sea of marmara|marmara, sea of azov|azov, white sea, wadden sea, alboran sea, java sea, bismarck sea, solomon sea, scotia sea, amundsen sea, greenland sea, norwegian sea, lincoln sea, sibuyan sea
+
+? Name a type of tree
+refill: oak, pine, maple, palm|palm tree, apple|apple tree
+spinner: birch, willow, cherry|cherry tree, redwood, spruce, fir, cedar, elm
+pufferfish: ash, sequoia, beech, poplar, cypress, eucalyptus, magnolia, aspen, walnut, juniper, hemlock, cottonwood, dogwood, sycamore, chestnut
+seeker: baobab, banyan, larch, hickory, yew, alder, hawthorn, mahogany, teak, olive, sweetgum, linden, mangrove, acacia, rowan|mountain ash, sassafras, catalpa, ginkgo, jacaranda
+celestillion: dragon's blood tree|dragon blood tree, joshua tree, monkey puzzle, wollemi pine, bristlecone pine, kapok, ceiba, hornbeam, tupelo, buckeye, ironwood, box elder|boxelder, paulownia, osage orange, sourwood, tamarack, kauri, rimu, totara, upas, sandalwood, frangipani
+
+? Name a constellation
+refill: orion, ursa major|big dipper|great bear, ursa minor|little dipper
+spinner: cassiopeia, scorpius|scorpio, leo, taurus, gemini
+pufferfish: aries, cancer, virgo, libra, sagittarius, capricornus|capricorn, aquarius, pisces, pegasus, draco, cygnus
+seeker: andromeda, perseus, hercules, lyra, aquila, centaurus, crux|southern cross, canis major, canis minor, bootes, cepheus, auriga, ophiuchus, corona borealis
+celestillion: monoceros, camelopardalis, lynx, vulpecula, sagitta, delphinus, equuleus, lacerta, triangulum, columba, lepus, pyxis, antlia, fornax, sculptor, horologium, reticulum, dorado, mensa, volans, chamaeleon, apus, pavo, tucana, indus, grus, phoenix, octans, norma, circinus, telescopium, microscopium, caelum, pictor, eridanus, puppis, vela, carina, hydra, crater, corvus, sextans, coma berenices, canes venatici, leo minor, musca, ara, lupus, scutum, serpens, cetus, piscis austrinus, hydrus, corona australis, triangulum australe
+
+? Name a mammal that lives in the ocean
+refill: dolphin, whale, seal, orca|killer whale
+spinner: sea lion, walrus, manatee, sea otter, blue whale, humpback whale|humpback
+pufferfish: narwhal, beluga|beluga whale, dugong, porpoise, sperm whale, polar bear
+seeker: elephant seal, leopard seal, fur seal, minke whale, gray whale|grey whale, fin whale, bowhead whale, pilot whale, right whale, harbor seal|harbour seal, monk seal
+celestillion: vaquita, beaked whale, sei whale, bryde's whale, hooded seal, ribbon seal, crabeater seal, weddell seal, ross seal, bearded seal, harp seal, ringed seal, irrawaddy dolphin, hector's dolphin, dall's porpoise, false killer whale, melon-headed whale
+
+? Name a Disney animated feature film (not Pixar)
+refill: the lion king, frozen, aladdin, the little mermaid
+spinner: beauty and the beast, cinderella, snow white|snow white and the seven dwarfs, moana, tangled, mulan, bambi, pinocchio, dumbo, sleeping beauty, peter pan
+pufferfish: zootopia, encanto, big hero 6, wreck-it ralph, lilo & stitch|lilo stitch, pocahontas, hercules, tarzan, the jungle book, 101 dalmatians|one hundred and one dalmatians, alice in wonderland, lady and the tramp, the princess and the frog, fantasia, frozen ii|frozen 2
+seeker: the hunchback of notre dame, atlantis|atlantis the lost empire, treasure planet, the emperor's new groove, robin hood, the aristocats, the fox and the hound, bolt, meet the robinsons, brother bear, raya and the last dragon, wish, strange world, the rescuers, oliver & company, the sword in the stone, the great mouse detective, home on the range, chicken little, dinosaur, winnie the pooh, moana 2, zootopia 2, ralph breaks the internet
+celestillion: the black cauldron, saludos amigos, the three caballeros, make mine music, fun and fancy free, melody time, the adventures of ichabod and mr toad, the many adventures of winnie the pooh, the rescuers down under, fantasia 2000
+
+? Name a country in Europe
+refill: france, germany, italy, spain, united kingdom|uk|great britain|britain|england
+spinner: portugal, greece, ireland, netherlands|holland, sweden, norway, switzerland, poland, russia, ukraine
+pufferfish: belgium, austria, denmark, finland, iceland, czech republic|czechia, hungary, romania, croatia, turkey|turkiye, serbia, bulgaria
+seeker: slovakia, slovenia, estonia, latvia, lithuania, belarus, moldova, albania, bosnia and herzegovina|bosnia, montenegro, north macedonia|macedonia, luxembourg, malta, cyprus, kosovo
+celestillion: andorra, liechtenstein, monaco, san marino, vatican city|vatican|holy see
+
+? Name a capital city in Asia
+refill: tokyo, beijing, seoul, new delhi|delhi, bangkok
+spinner: manila, jakarta, hanoi, singapore, kabul, tehran, baghdad, kuala lumpur
+pufferfish: islamabad, dhaka, kathmandu, taipei, riyadh, ankara, doha, abu dhabi, damascus, beirut, amman, pyongyang, ulaanbaatar|ulan bator, phnom penh
+seeker: vientiane, naypyidaw|nay pyi taw, kuwait city, muscat, sanaa|sana'a, tashkent, astana|nur-sultan, bishkek, baku, tbilisi, yerevan, male, manama
+celestillion: thimphu, dili, bandar seri begawan, ashgabat, dushanbe, sri jayawardenepura kotte|kotte
+
+? Name a type of cheese
+refill: cheddar, mozzarella, swiss, parmesan, american
+spinner: brie, gouda, feta, provolone, blue cheese|blue, cream cheese, pepper jack, monterey jack
+pufferfish: camembert, ricotta, goat cheese|chevre, colby, havarti, gruyere, cottage cheese, mascarpone, muenster|munster, manchego, halloumi, gorgonzola, roquefort, stilton
+seeker: emmental|emmentaler, edam, asiago, pecorino|pecorino romano, burrata, fontina, comte, paneer, queso fresco, jarlsberg, limburger, raclette, taleggio, boursin, string cheese
+celestillion: epoisses, casu marzu, reblochon, morbier, wensleydale, red leicester, double gloucester, caciocavallo, scamorza, oaxaca, cotija, quark, brunost|gjetost, tete de moine, mimolette, vacherin, saint-nectaire, abondance, idiazabal, cabrales, port salut, beaufort, pule, ossau-iraty, kefalotyri, graviera
+
+? Name a famous scientist
+refill: albert einstein|einstein, isaac newton|newton, marie curie|curie, charles darwin|darwin
+spinner: galileo|galileo galilei, nikola tesla|tesla, stephen hawking|hawking, thomas edison|edison
+pufferfish: louis pasteur|pasteur, gregor mendel|mendel, nicolaus copernicus|copernicus, johannes kepler|kepler, michael faraday|faraday, alexander fleming|fleming, carl sagan|sagan, ada lovelace|lovelace, alan turing|turing, jane goodall|goodall, niels bohr|bohr, archimedes, aristotle
+seeker: richard feynman|feynman, max planck|planck, james clerk maxwell|maxwell, dmitri mendeleev|mendeleev, rosalind franklin, j robert oppenheimer|robert oppenheimer|oppenheimer, werner heisenberg|heisenberg, erwin schrodinger|schrodinger, enrico fermi|fermi, edwin hubble|hubble, antoine lavoisier|lavoisier, rachel carson, katherine johnson, tycho brahe|brahe, euclid, pythagoras, robert hooke|hooke, robert boyle|boyle
+celestillion: lise meitner|meitner, emmy noether|noether, srinivasa ramanujan|ramanujan, paul dirac|dirac, barbara mcclintock|mcclintock, chien-shiung wu, alfred wegener|wegener, ibn al-haytham|alhazen, hypatia, carl linnaeus|linnaeus, antonie van leeuwenhoek|van leeuwenhoek|leeuwenhoek, ernest rutherford|rutherford, john dalton|dalton, henrietta leavitt|leavitt, cecilia payne-gaposchkin|cecilia payne, subrahmanyan chandrasekhar|chandrasekhar, wolfgang pauli|pauli, george washington carver, mary anning|anning, ignaz semmelweis|semmelweis
+
+? Name a part of the human body
+refill: head, hand, arm, leg, foot|feet, eye, nose, mouth
+spinner: heart, brain, finger, toe, ear, knee, elbow, shoulder, neck, stomach, hair
+pufferfish: lung|lungs, liver, kidney, ankle, wrist, chin, thumb, lip|lips, tongue, tooth|teeth, skin, hip, back, chest
+seeker: spleen, pancreas, gallbladder, appendix, eyebrow, eyelid, earlobe, nostril, armpit, navel|belly button, thigh, calf, shin, heel, palm, knuckle, forehead, temple, cheek, esophagus, bladder
+celestillion: philtrum, uvula, glabella, lunula, tragus, popliteal fossa, hallux, canthus, septum, columella, nape, axilla, thenar, pinna, cerebellum, hypothalamus, thymus, pituitary gland|pituitary, epiglottis, duodenum
+
+? Name an Olympic sport or event
+refill: swimming, gymnastics, track and field|athletics, basketball, soccer|football
+spinner: tennis, volleyball, boxing, diving, cycling, wrestling, figure skating, skiing|alpine skiing
+pufferfish: fencing, rowing, archery, judo, taekwondo, weightlifting, sailing, surfing, skateboarding, snowboarding, ice hockey|hockey, speed skating, table tennis, badminton, golf, triathlon, equestrian, handball, water polo, rugby sevens|rugby, baseball, softball
+seeker: canoeing|kayaking, modern pentathlon|pentathlon, sport climbing|climbing, breaking|breakdancing, shooting, bobsled|bobsleigh, luge, skeleton, curling, biathlon, ski jumping, cross-country skiing, nordic combined, freestyle skiing, artistic swimming|synchronized swimming, beach volleyball, trampoline, bmx
+celestillion: short track, rhythmic gymnastics, marathon swimming|open water swimming, keirin, madison, omnium, dressage, eventing, show jumping, skeet, trap, steeplechase, decathlon, heptathlon, race walking|racewalking, hammer throw, pole vault, discus, javelin, shot put, kitesurfing|kiteboarding
+
+? Name a currency
+refill: dollar, euro, pound|pound sterling, yen
+spinner: peso, rupee, yuan|renminbi, franc|swiss franc, ruble|rouble, won
+pufferfish: real, rand, krona, krone, lira, dinar, dirham, shekel, baht, ringgit, rupiah, zloty
+seeker: forint, koruna, leu, lev, dong, riyal, rial, naira, cedi, shilling, kwacha, birr, taka, kip, riel, kyat, tenge, som, manat, lari, dram, hryvnia, guarani, sol, bolivar, colon, lempira, quetzal, cordoba, balboa
+celestillion: ngultrum, pula, loti, lilangeni, ariary, ouguiya, dobra, nakfa, tala, pa'anga, vatu, kina, rufiyaa, afghani, somoni, denar, convertible mark, gourde, florin
+
+? Name a type of pasta
+refill: spaghetti, penne, macaroni, lasagna|lasagne, fettuccine|fettucine
+spinner: ravioli, linguine, rigatoni, tortellini, farfalle|bow tie|bowtie, rotini, angel hair|capellini
+pufferfish: orzo, fusilli, gnocchi, ziti, shells|conchiglie, manicotti, cannelloni, tagliatelle, pappardelle, gemelli, bucatini, orecchiette, ditalini, vermicelli, cavatappi
+seeker: campanelle, radiatori, rotelle|wagon wheels, paccheri, mafaldine, trofie, strozzapreti, cavatelli, casarecce, stelline, acini di pepe, anelli, tortelloni, agnolotti, mezzalune, calamarata, lumache, pici
+celestillion: corzetti|croxetti, lorighittas, su filindeu, busiate, garganelli, sagne, scialatielli, fregola|fregula, malloreddus, culurgiones, testaroli, cappelletti, tajarin, bigoli, maltagliati, passatelli, tortiglioni, ruote, fileja, foglie d'ulivo
+
+? Name a classical or film composer
+refill: wolfgang amadeus mozart|mozart, ludwig van beethoven|beethoven, johann sebastian bach|bach
+spinner: chopin, tchaikovsky, vivaldi, handel, haydn, schubert, brahms
+pufferfish: debussy, wagner, verdi, puccini, stravinsky, rachmaninoff|rachmaninov, liszt, mendelssohn|felix mendelssohn, john williams, hans zimmer, gershwin, johann strauss|strauss, dvorak
+seeker: mahler, ravel, grieg, sibelius, prokofiev, shostakovich, rossini, satie, holst, elgar, copland, bernstein, philip glass, robert schumann|schumann, mussorgsky, berlioz, saint-saens, bizet, rimsky-korsakov, ennio morricone|morricone
+celestillion: hildegard von bingen|hildegard, monteverdi, palestrina, josquin des prez|josquin, purcell, telemann, scarlatti, rameau, lully, gluck, clara schumann, fanny mendelssohn, scriabin, bartok, janacek, messiaen, ligeti, penderecki, arvo part, steve reich, john cage, schoenberg, alban berg, webern, britten, vaughan williams, faure, franck, bruckner, smetana, nielsen, hindemith
+
+? Name a bird
+refill: eagle, robin, crow, pigeon, parrot, owl, chicken, duck
+spinner: penguin, flamingo, hummingbird, blue jay, cardinal, sparrow, seagull|gull, swan, goose, peacock|peafowl, turkey, ostrich, hawk
+pufferfish: woodpecker, pelican, toucan, falcon, vulture, crane, heron, stork, raven, magpie, canary, finch, emu, kiwi, dove, osprey
+seeker: albatross, puffin, kingfisher, cockatoo, macaw, condor, roadrunner, nightingale, wren, starling, egret, ibis, cormorant, kookaburra, lark, oriole, warbler, budgie|budgerigar, quail, pheasant
+celestillion: hoatzin, shoebill, kakapo, cassowary, quetzal, potoo, frigatebird, hoopoe, oilbird, secretary bird, tui, takahe, kea, lyrebird, bowerbird, nuthatch, treecreeper, dipper, wagtail, bee-eater, jacana, skua, tern, gannet, booby, sandpiper, dunlin, godwit, curlew
+
+? Name a dinosaur
+refill: tyrannosaurus rex|t rex|t-rex|trex|tyrannosaurus, triceratops, velociraptor
+spinner: stegosaurus, brachiosaurus, spinosaurus, diplodocus
+pufferfish: ankylosaurus, brontosaurus, allosaurus, parasaurolophus, iguanodon, apatosaurus, pachycephalosaurus, dilophosaurus, archaeopteryx
+seeker: carnotaurus, gallimimus, compsognathus, giganotosaurus, argentinosaurus, deinonychus, therizinosaurus, oviraptor, protoceratops, baryonyx, utahraptor, microraptor, styracosaurus, maiasaura, corythosaurus, edmontosaurus
+celestillion: amargasaurus, nigersaurus, kentrosaurus, mamenchisaurus, coelophysis, herrerasaurus, eoraptor, plateosaurus, sinosauropteryx, yutyrannus, dreadnoughtus, patagotitan, irritator, suchomimus, pachyrhinosaurus, einiosaurus, minmi, troodon, ceratosaurus, megalosaurus, cryolophosaurus, majungasaurus, tarbosaurus, albertosaurus, gorgosaurus, daspletosaurus, nodosaurus, sauropelta, pentaceratops, kosmoceratops, zuniceratops, psittacosaurus, lambeosaurus, ouranosaurus
+
+? Name a kitchen utensil or tool
+refill: spoon, fork, knife, spatula, whisk
+spinner: ladle, tongs, peeler|vegetable peeler, grater|cheese grater, can opener, rolling pin, colander, cutting board
+pufferfish: measuring cup, measuring spoon, sieve|strainer, garlic press, pizza cutter, potato masher|masher, mixing bowl, corkscrew, bottle opener, oven mitt, meat thermometer|thermometer, skewer, baster|turkey baster, zester
+seeker: mandoline, microplane, mortar and pestle|pestle|mortar, salad spinner, pastry brush, pastry cutter|pastry blender, melon baller, ice cream scoop, egg slicer, nutcracker, apple corer|corer, splatter screen, cleaver, bench scraper, funnel, flour sifter|sifter, piping bag, kitchen shears|shears, spider strainer
+celestillion: tamis|drum sieve, bain-marie, mezzaluna, chitarra, bread lame|lame, banneton, molcajete, suribachi, spurtle, dough docker, offset spatula, fish spatula, cake tester, pie bird, larding needle, trussing needle, food mill|mouli, potato ricer|ricer, poultry shears, chinois
+
+? Name a river
+refill: nile, amazon, mississippi
+spinner: thames, yangtze, ganges, danube, rhine, colorado, hudson, missouri
+pufferfish: seine, mekong, volga, congo, euphrates, tigris, rio grande, ohio, st lawrence|saint lawrence, zambezi, niger, jordan, indus, yellow river|huang he, tiber
+seeker: columbia, yukon, mackenzie, orinoco, parana, murray, darling, loire, elbe, po, rhone, ebro, tagus, douro, oder, vistula, dnieper, don, ob, yenisei, lena, amur, irrawaddy, brahmaputra, salween, snake, potomac, delaware, tennessee, arkansas, red river, shannon, severn
+celestillion: okavango, limpopo, orange river|orange, ubangi, kasai, madeira, purus, japura, rio negro|negro, sao francisco, uruguay, paraguay, magdalena, essequibo, fraser, nelson, churchill, peace, athabasca, kolyma, indigirka, ural, kura, aras|araks, syr darya, amu darya|oxus, helmand, sutlej, chenab, narmada, godavari, krishna, kaveri|cauvery, chao phraya, pearl river, sepik, waikato, clutha
+
+? Name a type of flower
+refill: rose, tulip, daisy, sunflower, lily
+spinner: orchid, daffodil, lavender, carnation, poppy, dandelion, violet, hibiscus
+pufferfish: lotus, iris, peony, marigold, chrysanthemum|mum, jasmine, magnolia, hydrangea, lilac, petunia, begonia, geranium, pansy, zinnia, dahlia, cherry blossom
+seeker: gardenia, camellia, azalea, rhododendron, snapdragon, foxglove, bluebell, buttercup, morning glory, gladiolus, aster, cosmos, freesia, ranunculus, anemone, delphinium, lupine|lupin, hyacinth, crocus, amaryllis, bird of paradise, bougainvillea, plumeria|frangipani, wisteria, heather, primrose, edelweiss, forget-me-not
+celestillion: rafflesia, corpse flower|titan arum, protea, hellebore, gentian, columbine|aquilegia, scabiosa, astilbe, heliconia, anthurium, calla lily|calla, nasturtium, verbena, salvia, statice, stephanotis, tuberose, trillium, bleeding heart, love-in-a-mist|nigella, hollyhock, larkspur, cyclamen, clematis, gerbera, alstroemeria, red hot poker|kniphofia, asphodel, oleander, ixora, waratah
+
+? Name a car brand
+refill: toyota, ford, honda, bmw, tesla, chevrolet|chevy, mercedes|mercedes-benz
+spinner: nissan, audi, volkswagen|vw, hyundai, jeep, kia, ferrari, porsche, lamborghini, subaru, mazda
+pufferfish: lexus, dodge, gmc, cadillac, buick, volvo, jaguar, land rover, range rover, mitsubishi, fiat, mini, bentley, rolls-royce, maserati, bugatti, aston martin, lincoln, chrysler, ram, acura, infiniti, genesis
+seeker: peugeot, renault, citroen, skoda, seat, alfa romeo, lotus, mclaren, koenigsegg, pagani, polestar, rivian, lucid, saab, opel, vauxhall, suzuki, byd, geely, smart, lancia, dacia, tata, mahindra, holden
+celestillion: pontiac, oldsmobile, plymouth, saturn, hummer, mercury, studebaker, packard, delorean, scion, isuzu, daewoo, proton, perodua, lada, trabant, zastava, spyker, rimac, nio, xpeng, hongqi, wuling, great wall|haval, cupra, alpine, morgan, tvr, caterham, maybach, karma, fisker
+
+? Name a mountain or mountain range
+refill: mount everest|everest, rocky mountains|rockies, alps, himalayas
+spinner: kilimanjaro|mount kilimanjaro, andes, mount fuji|fuji, appalachians|appalachian mountains, k2, mont blanc, matterhorn
+pufferfish: denali|mount mckinley, mount rushmore, mount olympus|olympus, pyrenees, ural mountains|urals, mount st helens|mount saint helens, mount rainier|rainier, mount vesuvius|vesuvius, mount etna|etna, sierra nevada, atlas mountains, mount sinai, table mountain
+seeker: aconcagua, mount elbrus|elbrus, kangchenjunga, lhotse, makalu, annapurna, nanga parbat, mount kenya, carpathians, caucasus, dolomites, apennines, karakoram, hindu kush, tian shan, aoraki|mount cook, ben nevis, mount whitney, pikes peak, mount hood, mount shasta, mount kosciuszko, mount ararat|ararat, half dome, cascade range|cascades, brooks range, alaska range, great dividing range, drakensberg
+celestillion: mount vinson|vinson massif, puncak jaya|carstensz pyramid, mount erebus, chimborazo, cotopaxi, ojos del salado, huascaran, mauna kea, mauna loa, mount logan, pico de orizaba|citlaltepetl, popocatepetl, iztaccihuatl, mount meru, rwenzori, ras dashen, toubkal, mulhacen, zugspitze, grossglockner, triglav, mount damavand|damavand, mount kinabalu|kinabalu, cho oyu, dhaulagiri, manaslu, shishapangma, gasherbrum, broad peak, eiger, jungfrau, monte rosa, mount robson, mount assiniboine, mount elbert, mount mitchell, katahdin|mount katahdin, mount washington, ruapehu
+
+? Name something you might find at the beach
+refill: sand, seashells|shells|sea shells, waves, beach umbrella|umbrella, beach towel|towel, sunscreen, water
+spinner: seagull|seagulls, sandcastle, crab, lifeguard, surfboard, bucket|pail|bucket and spade, beach ball, sunglasses, flip flops, swimsuit|bathing suit
+pufferfish: seaweed, starfish, jellyfish, driftwood, pier, boardwalk, lighthouse, kite, cooler, beach chair, sand dune|dunes, tide pool|tide pools, rocks, palm trees
+seeker: sand dollar, hermit crab, sea glass, sand flea|sand fleas, lifeguard tower, volleyball net, boogie board|bodyboard, snorkel, metal detector, jet ski, sandbar, cabana, hammock
+celestillion: horseshoe crab, sea cucumber, mermaid's purse, sea urchin, kelp, barnacles, sandpiper, plover, sea foam, breakwater|groyne, jetty, rip current|riptide, bioluminescence, ghost crab, coquina, ambergris, sea bean, portuguese man o' war, velella|by-the-wind sailor
+
+? Name a Harry Potter character
+refill: harry potter|harry, hermione granger|hermione, ron weasley|ron, albus dumbledore|dumbledore, lord voldemort|voldemort, rubeus hagrid|hagrid, severus snape|snape
+spinner: draco malfoy|draco, sirius black|sirius, dobby, neville longbottom|neville, ginny weasley|ginny, luna lovegood|luna, minerva mcgonagall|mcgonagall, fred weasley|fred, george weasley|george, hedwig, bellatrix lestrange|bellatrix
+pufferfish: lucius malfoy|lucius, remus lupin|lupin, dudley dursley|dudley, vernon dursley, petunia dursley, cedric diggory|cedric, cho chang, peter pettigrew|wormtail, dolores umbridge|umbridge, gilderoy lockhart|lockhart, molly weasley, arthur weasley, percy weasley, moaning myrtle, nearly headless nick, kreacher, buckbeak, fawkes, crookshanks, nagini, argus filch|filch, mad-eye moody|alastor moody, nymphadora tonks|tonks, fleur delacour|fleur, viktor krum|krum, james potter, lily potter
+seeker: quirinus quirrell|quirrell, kingsley shacklebolt, horace slughorn|slughorn, sybill trelawney|trelawney, pomona sprout, filius flitwick|flitwick, madam pomfrey, madam hooch, oliver wood, seamus finnigan, dean thomas, lavender brown, parvati patil, padma patil, vincent crabbe|crabbe, gregory goyle|goyle, pansy parkinson, narcissa malfoy, scabbers, griphook, aberforth dumbledore, gellert grindelwald|grindelwald, barty crouch, xenophilius lovegood, rita skeeter, cornelius fudge, rufus scrimgeour, ollivander, peeves, firenze, aragog, bill weasley, charlie weasley, winky
+celestillion: mundungus fletcher, dedalus diggle, elphias doge, arabella figg, bathilda bagshot, amycus carrow, alecto carrow, antonin dolohov, fenrir greyback, rowena ravenclaw, helga hufflepuff, godric gryffindor, salazar slytherin, grawp, bane, hepzibah smith, morfin gaunt, merope gaunt, romilda vane, cormac mclaggen, zacharias smith, ernie macmillan, hannah abbott, justin finch-fletchley, colin creevey, dennis creevey, katie bell, angelina johnson, lee jordan, ludo bagman, igor karkaroff, madame maxime|olympe maxime, sir cadogan, the grey lady, the bloody baron, the fat friar, nicolas flamel
+
+? Name a famous landmark in Paris
+refill: eiffel tower, louvre, arc de triomphe, notre-dame|notre dame
+spinner: champs-elysees, sacre-coeur, montmartre, seine, moulin rouge
+pufferfish: musee d'orsay|orsay, pantheon, palace of versailles|versailles, centre pompidou|pompidou, les invalides|invalides, place de la concorde, luxembourg gardens|jardin du luxembourg, tuileries|tuileries garden, pont neuf, catacombs, pere lachaise cemetery|pere lachaise
+seeker: sainte-chapelle, palais garnier|opera garnier, conciergerie, la defense, grand palais, petit palais, pont alexandre iii, place des vosges, musee rodin|rodin museum, latin quarter, le marais|marais, place de la bastille|bastille, galeries lafayette, shakespeare and company, trocadero, ile de la cite
+celestillion: musee de l'orangerie|orangerie, saint-sulpice, canal saint-martin, parc des buttes-chaumont|buttes-chaumont, parc de la villette|la villette, musee de cluny|cluny, palais-royal, palais de tokyo, fondation louis vuitton, bibliotheque nationale, institut de france, la samaritaine, passage des panoramas, coulee verte|promenade plantee, tour montparnasse|montparnasse tower, saint-eustache, la madeleine, place vendome, hotel de ville, jardin des plantes, musee carnavalet, pont des arts
+
+? Name a famous ship
+refill: titanic, mayflower
+spinner: santa maria, queen mary|queen mary 2, uss enterprise
+pufferfish: lusitania, bismarck, hms victory, uss constitution|old ironsides, uss arizona, nina, pinta, hms beagle|beagle, queen elizabeth 2|qe2, edmund fitzgerald, mary rose
+seeker: cutty sark, endurance, mary celeste, golden hind, hms bounty|bounty, yamato, uss missouri, uss monitor, css virginia|merrimack, andrea doria, exxon valdez, kon-tiki, calypso, vasa, britannic, olympic, carpathia, hms endeavour|endeavour
+celestillion: uss indianapolis, h l hunley|hunley, batavia, whydah gally|whydah, queen anne's revenge, hms terror, hms erebus, fram, uss nautilus, mikasa, battleship potemkin|potemkin, cruiser aurora, hms dreadnought, hms hood, sultana, la amistad|amistad, speedwell, half moon, kronan, normandie, wilhelm gustloff, dona paz
+
+? Name a Roman emperor
+refill: augustus, nero, caligula
+spinner: marcus aurelius, constantine|constantine the great, hadrian, commodus, tiberius, claudius
+pufferfish: trajan, vespasian, titus, diocletian, domitian, septimius severus, caracalla, justinian
+seeker: galba, otho, vitellius, nerva, antoninus pius, lucius verus, elagabalus|heliogabalus, severus alexander, maximinus thrax, philip the arab, decius, valerian, gallienus, aurelian, probus, theodosius, julian|julian the apostate, valentinian, valens, honorius, romulus augustulus
+celestillion: pertinax, didius julianus, macrinus, gordian, pupienus, balbinus, trebonianus gallus, aemilian, claudius gothicus, quintillus, tacitus, florian, carus, carinus, numerian, maximian, galerius, constantius chlorus, licinius, maxentius, jovian, gratian, arcadius, majorian, anthemius, olybrius, glycerius, julius nepos, petronius maximus, avitus
+
+? Name a fast food chain
+refill: mcdonald's, burger king, wendy's, kfc|kentucky fried chicken, taco bell, subway
+spinner: chick-fil-a, pizza hut, domino's, popeyes, chipotle, sonic, arby's, five guys, in-n-out|in and out, dunkin|dunkin donuts, starbucks, dairy queen
+pufferfish: jack in the box, carl's jr, hardee's, white castle, panda express, little caesars, papa john's, wingstop, shake shack, culver's, whataburger, raising cane's|canes, panera|panera bread, tim hortons, jersey mike's, jimmy john's, qdoba, del taco, zaxby's, bojangles
+seeker: checkers|rally's, steak 'n shake|steak n shake, a&w, long john silver's, church's chicken|church's, el pollo loco, krystal, freddy's, smashburger, firehouse subs, potbelly, cook out, wienerschnitzel, sbarro, auntie anne's, cinnabon, nathan's famous|nathan's, quiznos, moe's, baja fresh, jollibee, pollo campero, nando's, greggs, pret a manger|pret, mos burger
+celestillion: lotteria, marugame udon, roy rogers, wimpy, hungry jack's, red rooster, harvey's, mary brown's, bonchon, the habit|habit burger, burgerville, runza, taco john's, taco cabana, taco time, dick's drive-in, swensons, skyline chili, gold star chili, white spot
+
+? Name a sea creature that isn't a mammal
+refill: shark, octopus, jellyfish, starfish|sea star, crab, lobster
+spinner: squid, seahorse|sea horse, stingray|ray, clownfish|clown fish, sea turtle|turtle, eel, shrimp
+pufferfish: pufferfish|puffer fish|blowfish, swordfish, tuna, barracuda, manta ray, coral, sea urchin|urchin, sea anemone|anemone, clam, oyster, mussel, sea cucumber, hammerhead shark|hammerhead, great white shark|great white, cod, salmon, marlin, angelfish
+seeker: moray eel|moray, lionfish, anglerfish, barnacle, nautilus, cuttlefish, nudibranch|sea slug, krill, plankton, sea sponge|sponge, scallop, conch, sardine, mackerel, halibut, flounder, grouper, triggerfish, parrotfish, needlefish, sea snake, horseshoe crab, giant squid
+celestillion: coelacanth, oarfish, ocean sunfish|mola mola|sunfish, frilled shark, goblin shark, gulper eel, viperfish, dragonfish, fangtooth, blobfish, sarcastic fringehead, wobbegong, chimaera|ghost shark, hagfish, lamprey, sea pig, vampire squid, dumbo octopus, siphonophore, salp, pyrosome, sea butterfly|pteropod, barreleye, stargazer, frogfish, cookiecutter shark, megamouth shark, giant isopod, yeti crab, christmas tree worm, bobbit worm, mantis shrimp, pistol shrimp, cone snail, blue-ringed octopus, box jellyfish, portuguese man o' war
+
+? Name a board game
+refill: monopoly, chess, scrabble, checkers|draughts, clue|cluedo, candy land
+spinner: risk, battleship, connect four|connect 4, sorry, operation, the game of life|life, trivial pursuit, catan|settlers of catan
+pufferfish: pictionary, guess who, mouse trap, chutes and ladders|snakes and ladders, backgammon, go, othello|reversi, stratego, mastermind, parcheesi|ludo, chinese checkers, mancala, ticket to ride, pandemic, carcassonne, codenames
+seeker: azul, wingspan, dominion, 7 wonders|seven wonders, splendor, king of tokyo, terraforming mars, gloomhaven, agricola, puerto rico, power grid, dixit, small world, cranium, balderdash, hungry hungry hippos, axis and allies, diplomacy, cribbage, shogi, xiangqi|chinese chess
+celestillion: brass|brass birmingham, twilight imperium, spirit island, through the ages, el grande, tigris and euphrates, caylus, le havre, tzolk'in, root, scythe, mage knight, arkham horror, eldritch horror, viticulture, great western trail, the castles of burgundy, concordia, hive, tak, onitama, santorini, quoridor, blokus, hnefatafl|tafl, senet, the royal game of ur|game of ur, nine men's morris, fanorona, pachisi, carrom
+
+? Name a Pixar film or short
+refill: toy story, finding nemo, the incredibles, cars, up, monsters inc
+spinner: inside out, coco, ratatouille, wall-e, a bug's life, toy story 2, toy story 3, brave, finding dory
+pufferfish: monsters university, cars 2, cars 3, incredibles 2, toy story 4, soul, luca, turning red, onward, the good dinosaur, inside out 2, elemental
+seeker: lightyear, elio, bao, piper, for the birds, la luna, partly cloudy, presto, lava, geri's game, luxo jr
+celestillion: burn-e, day & night, the blue umbrella, sanjay's super team, purl, kitbull, loop, wind, float, out, burrow, carl's date, knick knack, tin toy, red's dream, boundin', one man band, lifted, jack-jack attack, mike's new car, dug's special mission, party central, riley's first date
+
+? Name a superhero
+refill: superman, batman, spider-man|spiderman, iron man, wonder woman, captain america
+spinner: hulk|the hulk|incredible hulk, thor, black panther, the flash|flash, aquaman, wolverine, black widow, deadpool
+pufferfish: green lantern, captain marvel, ant-man, doctor strange, hawkeye, cyclops, storm, green arrow, daredevil, scarlet witch, supergirl, batgirl, robin, nightwing, cyborg, shazam, star-lord, groot, rocket|rocket raccoon, gamora, falcon, winter soldier, silver surfer, the thing, human torch, mister fantastic, invisible woman, ms marvel, she-hulk, moon knight, shang-chi, the vision|vision
+seeker: martian manhunter, hawkgirl, hawkman, blue beetle, booster gold, firestorm, zatanna, raven, starfire, beast boy, swamp thing, plastic man, the atom, black canary, huntress, iceman, beast, jean grey, rogue, gambit, nightcrawler, colossus, kitty pryde|shadowcat, jubilee, psylocke, cable, luke cage, iron fist, jessica jones, blade, ghost rider, nova, adam warlock, quicksilver, the wasp|wasp, war machine, miles morales
+celestillion: squirrel girl, moondragon, quasar, sentry, black bolt, cloak, dagger, misty knight, mantis, drax, the question, mister miracle, big barda, metamorpho, black lightning, static, vixen, animal man, elongated man, red tornado, doctor fate, hourman, stargirl, captain atom, darkhawk, sleepwalker
+
+? Name a type of bread
+refill: white bread, whole wheat|wheat, sourdough, rye, baguette, bagel
+spinner: croissant, pita, naan, tortilla, ciabatta, brioche, cornbread, focaccia, multigrain
+pufferfish: pumpernickel, challah, english muffin, biscuit, banana bread, garlic bread, flatbread, dinner roll|roll, bun, soda bread, french bread, potato bread, pretzel, matzo|matzah
+seeker: injera, chapati|roti, paratha, lavash, babka, panettone, stollen, crumpet, scone, kaiser roll, zwieback, rusk, bao|bao bun, arepa, pandesal|pan de sal, bialy, grissini|breadsticks, pain de mie, fougasse
+celestillion: pan de muerto, kulich, lefse, bannock, chorek, pogaca, barmbrack, pao de queijo, puri, bhatura, kulcha, sheermal, simit, tsoureki, vanocka, korovai, rugbrod, knackebrod, piadina, michetta, pan dulce, bolillo, telera, concha, cozonac, pulla
+
+? Name a famous author
+refill: william shakespeare|shakespeare, j k rowling|jk rowling|rowling, stephen king, mark twain, charles dickens|dickens
+spinner: jane austen|austen, ernest hemingway|hemingway, edgar allan poe|poe, george orwell|orwell, agatha christie, j r r tolkien|tolkien, dr seuss, f scott fitzgerald|fitzgerald, harper lee
+pufferfish: leo tolstoy|tolstoy, john steinbeck|steinbeck, toni morrison, maya angelou, virginia woolf, oscar wilde, emily dickinson, robert frost, c s lewis, roald dahl, hans christian andersen, homer, dante|dante alighieri, victor hugo, jules verne, mary shelley, charlotte bronte, emily bronte, h g wells, arthur conan doyle, j d salinger, kurt vonnegut, ray bradbury, george r r martin, dan brown, john green, suzanne collins, rick riordan, judy blume, james patterson
+seeker: fyodor dostoevsky|dostoevsky, franz kafka|kafka, gabriel garcia marquez|garcia marquez, james joyce, william faulkner|faulkner, herman melville|melville, nathaniel hawthorne, sylvia plath, haruki murakami|murakami, margaret atwood|atwood, octavia butler, ursula k le guin|le guin, isaac asimov|asimov, philip k dick, aldous huxley|huxley, cormac mccarthy, chinua achebe|achebe, langston hughes, zora neale hurston, walt whitman, john milton, geoffrey chaucer|chaucer, miguel de cervantes|cervantes, alexandre dumas|dumas, gustave flaubert|flaubert, anton chekhov|chekhov, louisa may alcott, l m montgomery, terry pratchett, neil gaiman, kazuo ishiguro, salman rushdie, albert camus|camus, jean-paul sartre|sartre, marcel proust|proust, samuel beckett|beckett
+celestillion: murasaki shikibu, sei shonagon, rabindranath tagore|tagore, naguib mahfouz, jorge luis borges|borges, clarice lispector, italo calvino|calvino, wislawa szymborska, halldor laxness, olga tokarczuk, han kang, jon fosse, annie ernaux, abdulrazak gurnah, pablo neruda|neruda, octavio paz, czeslaw milosz, orhan pamuk, yasunari kawabata, kenzaburo oe, mo yan, lu xun, natsume soseki, yukio mishima, ngugi wa thiong'o, wole soyinka, nadine gordimer, j m coetzee, mikhail bulgakov, nikolai gogol, ivan turgenev, alexander pushkin, rainer maria rilke, thomas mann, hermann hesse, gunter grass, w g sebald, elena ferrante, umberto eco, marguerite yourcenar, simone de beauvoir
+
+? Name a type of shoe
+refill: sneakers|sneaker|trainers|tennis shoes, boots|boot, sandals|sandal, high heels|heels, flip-flops, slippers
+spinner: loafers, ballet flats|flats, cleats, crocs, stilettos, wedges, clogs, moccasins, rain boots|wellies|wellingtons, cowboy boots
+pufferfish: oxfords, mules, espadrilles, platforms, combat boots, hiking boots, chelsea boots, slides, pumps, mary janes, boat shoes, ugg boots|uggs, slip-ons
+seeker: brogues, derbies|derby, monk straps, chukka boots|chukkas, desert boots, kitten heels, slingbacks, peep toes, gladiator sandals, huaraches, jellies, galoshes, waders, pointe shoes|ballet shoes, tap shoes, bowling shoes, golf shoes, climbing shoes, snow boots
+celestillion: geta, zori, tabi, jutti|mojari, kolhapuri, opanak, sabots, pattens, chopines, poulaines|crakows, brothel creepers|creepers, winklepickers, spectator shoes|spectators, ghillies, d'orsay, mukluks, valenki, klompen, okobo, paduka, alpargatas, caligae
+
+? Name a city in the United States
+refill: new york city|new york|nyc, los angeles|la, chicago, miami, las vegas
+spinner: houston, san francisco, boston, seattle, dallas, atlanta, washington dc|washington|dc, philadelphia, denver, phoenix, orlando, new orleans
+pufferfish: austin, nashville, san diego, detroit, portland, minneapolis, honolulu, salt lake city, kansas city, st louis|saint louis, baltimore, pittsburgh, cleveland, charlotte, san antonio, tampa, memphis, sacramento, indianapolis, columbus, cincinnati, milwaukee, anchorage
+seeker: albuquerque, tucson, boise, omaha, raleigh, richmond, buffalo, louisville, oklahoma city, tulsa, el paso, fresno, spokane, savannah, charleston, providence, hartford, des moines, madison, birmingham, jacksonville, santa fe, reno, fort worth, oakland, san jose
+celestillion: juneau, pierre, bismarck, montpelier, augusta, cheyenne, helena, olympia, dover, frankfort, jefferson city, lincoln, topeka, springfield, harrisburg, annapolis, concord, carson city, tallahassee, baton rouge, little rock, montgomery, trenton, albany
+
+? Name a type of tea
+refill: green tea|green, black tea|black, chamomile, peppermint|mint, earl grey, iced tea, sweet tea
+spinner: oolong, chai, matcha, white tea, herbal tea, english breakfast, jasmine, ginger tea|ginger, lemon tea, hibiscus, bubble tea|boba
+pufferfish: rooibos, darjeeling, assam, sencha, hojicha, genmaicha, yerba mate|mate, lapsang souchong, pu-erh|puer, lavender tea, rose tea, thai tea, milk tea, london fog, kombucha
+seeker: gyokuro, bancha, kukicha, ceylon, keemun, yunnan|dian hong, irish breakfast, prince of wales, russian caravan, tieguanyin|iron goddess, da hong pao, longjing|dragon well, silver needle, white peony|bai mu dan, honeybush, butterfly pea tea|butterfly pea, barley tea|mugicha, chrysanthemum tea, tulsi|holy basil, yuja tea|yuzu tea
+celestillion: biluochun|bi luo chun, junshan yinzhen, lu an gua pian, huangshan maofeng, tai ping hou kui, dong ding, oriental beauty|dongfang meiren, gaba tea, kabusecha, tamaryokucha, nilgiri, sun moon lake, butter tea|po cha, guayusa, yaupon, kuding
+
+? Name a type of weather
+refill: rain, snow, sunny|sun|sunshine, cloudy|clouds, windy|wind, thunderstorm|storm
+spinner: hail, fog, lightning, thunder, tornado, hurricane, drizzle, sleet, blizzard
+pufferfish: humidity|humid, mist, frost, heat wave, drought, monsoon, typhoon, overcast, flood, ice storm, freezing rain, dust storm|sandstorm, cyclone
+seeker: squall, gale, haze, smog, dew, rainbow, partly cloudy, polar vortex, derecho, microburst, graupel, black ice, whiteout, waterspout, haboob, nor'easter, chinook, santa ana winds|santa ana
+celestillion: virga, mammatus clouds|mammatus, petrichor, diamond dust, sun dog|sundog, ball lightning, thundersnow, fire whirl|firenado, pyrocumulus, haar, sirocco, mistral, foehn, bora, harmattan, simoom, williwaw, katabatic wind, bomb cyclone, atmospheric river|pineapple express, heat burst, freezing fog, hoarfrost, rime, noctilucent clouds, gustnado, dust devil, landspout
+
+? Name a famous painting
+refill: mona lisa, the starry night
+spinner: the last supper, the scream, girl with a pearl earring, american gothic
+pufferfish: the birth of venus, the persistence of memory, water lilies, the great wave off kanagawa|the great wave, the creation of adam, sunflowers, guernica, the kiss, the night watch, nighthawks, the son of man, whistler's mother
+seeker: las meninas, the garden of earthly delights, the arnolfini portrait, impression sunrise, a sunday afternoon on the island of la grande jatte|sunday afternoon, liberty leading the people, the raft of the medusa, wanderer above the sea of fog, the school of athens, the hay wain, the third of may 1808|the third of may, olympia, luncheon on the grass|le dejeuner sur l'herbe, the gleaners, campbell's soup cans, marilyn diptych, christina's world, the treachery of images, the sleeping gypsy
+celestillion: the ambassadors, the fighting temeraire, saturn devouring his son, the tower of babel, netherlandish proverbs, the hunters in the snow, the anatomy lesson of dr nicolaes tulp|the anatomy lesson, the swing, the oath of the horatii, the death of marat, the lady of shalott, ophelia, the nightmare, isle of the dead, luncheon of the boating party, bal du moulin de la galette, a bar at the folies-bergere, the card players, les demoiselles d'avignon, black square, the large bathers, the tree of life
+
+? Name a toy
+refill: lego|legos, barbie, teddy bear, doll, ball, yo-yo
+spinner: rubik's cube, hot wheels, slinky, play-doh|playdough, nerf|nerf gun, action figure, kite, jump rope, puzzle, toy car, stuffed animal|plushie, fidget spinner
+pufferfish: etch a sketch, frisbee, hula hoop, jack-in-the-box, rocking horse, spinning top|top, marbles, mr potato head, furby, tamagotchi, beanie babies, transformers, g i joe|gi joe, magic 8 ball, lite-brite, lincoln logs, k'nex, view-master, polly pocket, bratz, cabbage patch kids, pogo stick, water gun|super soaker, silly putty
+seeker: easy-bake oven, tickle me elmo, stretch armstrong, spirograph, tinkertoy|tinker toys, erector set|meccano, troll doll, pet rock, chatter telephone, see 'n say, speak & spell, simon, bop it, laser tag, my little pony, care bears, slime, magna-tiles, squishmallows, hatchimals, beyblade, tonka truck, matchbox cars, weebles, jacks, pick-up sticks, kendama, rubber duck
+celestillion: zoetrope, thaumatrope, kaleidoscope, cup and ball|bilboquet, diabolo, whirligig, bullroarer, jacob's ladder, newton's cradle, drinking bird, gyroscope, cat's cradle, paper doll, corn husk doll, matryoshka|russian doll|nesting dolls, kokeshi, daruma, hobby horse, hoop and stick, astrojax, clackers, shrinky dinks, sea-monkeys
+
+? Name a mythological creature
+refill: dragon, unicorn, mermaid, vampire, werewolf
+spinner: phoenix, centaur, pegasus, griffin|gryphon, troll, fairy, ghost, zombie, minotaur, medusa
+pufferfish: cyclops, kraken, sphinx, hydra, yeti|abominable snowman, bigfoot|sasquatch, loch ness monster|nessie, siren, gorgon, banshee, goblin, elf, dwarf, ogre, leprechaun, gnome, chimera, cerberus, harpy, satyr|faun
+seeker: basilisk, manticore, wendigo, kitsune, kappa, golem, genie|djinn|jinn, selkie, kelpie, chupacabra, thunderbird, roc, wyvern, cockatrice, hippogriff, valkyrie, nymph, dryad, naga, garuda, tengu, oni, yokai, krampus, mothman, jersey devil, bunyip, dullahan, changeling, will-o'-the-wisp, fenrir, jormungandr, sleipnir
+celestillion: qilin|kirin, baku, nue, jorogumo, rokurokubi, aswang, manananggal, tikbalang, kapre, nuckelavee, each-uisge, barghest, black shuck, lamia, empusa, scylla, charybdis, typhon, echidna, ladon, hecatoncheires, ammit, bennu, simurgh, huma, al-mi'raj, tarasque, peluda, bai ze, pixiu, chollima, haetae, bulgasari, ahuizotl, cipactli, camazotz, mapinguari, encantado, curupira, taniwha, patupaiarehe, yowie
+
+? Name a technology company
+refill: apple, microsoft, google, amazon, samsung
+spinner: meta|facebook, ibm, intel, dell, hp|hewlett-packard, sony, nvidia, tesla, netflix, oracle
+pufferfish: amd, cisco, adobe, salesforce, lenovo, asus, acer, qualcomm, uber, airbnb, spotify, x|twitter, paypal, ebay, alibaba, tencent, huawei, xiaomi, openai, anthropic, tsmc, toshiba, nintendo
+seeker: sap, vmware, broadcom, texas instruments, micron, western digital, seagate, logitech, razer, dropbox, slack, zoom, shopify, atlassian, palantir, snowflake, servicenow, workday, autodesk, red hat, canonical, arm, asml, baidu, bytedance, sega, atari, commodore, xerox, motorola, nokia, ericsson, blackberry
+celestillion: sun microsystems, silicon graphics|sgi, digital equipment corporation, compaq, gateway, palm, novell, borland, netscape, lycos, altavista, fairchild semiconductor|fairchild, cray, thinking machines, general magic, next computer|next, osborne, kaypro, tandy, wang laboratories, control data, honeywell, unisys, burroughs, amiga, acorn, sinclair, olivetti, fujitsu, nec, hitachi
+
+? Name a famous explorer
+refill: christopher columbus|columbus, lewis and clark|meriwether lewis|william clark, marco polo, neil armstrong|armstrong, ferdinand magellan|magellan
+spinner: vasco da gama|da gama, amerigo vespucci|vespucci, leif erikson|leif ericson, james cook|captain cook, sacagawea, hernan cortes|cortes, francisco pizarro|pizarro, juan ponce de leon|ponce de leon
+pufferfish: ernest shackleton|shackleton, roald amundsen|amundsen, robert falcon scott, edmund hillary|hillary, tenzing norgay|tenzing, henry hudson, john cabot|cabot, jacques cartier|cartier, hernando de soto|de soto, francis drake|sir francis drake, walter raleigh|raleigh, ibn battuta, zheng he, david livingstone|livingstone, daniel boone
+seeker: vitus bering|bering, abel tasman, samuel de champlain|champlain, bartolomeu dias|dias, juan sebastian elcano|elcano, robert peary|peary, matthew henson|henson, mungo park, henry morton stanley, richard francis burton, john hanning speke|speke, alexander von humboldt|humboldt, zebulon pike, john wesley powell, jacques cousteau|cousteau, yuri gagarin|gagarin, amelia earhart|earhart, charles lindbergh|lindbergh, erik the red, francisco vasquez de coronado|coronado, la salle, cabeza de vaca
+celestillion: ahmad ibn fadlan|ibn fadlan, xuanzang, faxian, zhang qian, william of rubruck, pytheas, hanno the navigator, saint brendan, jules dumont d'urville|dumont d'urville, louis antoine de bougainville|bougainville, la perouse, james clark ross, john franklin, fridtjof nansen|nansen, matthew flinders|flinders, burke and wills, ludwig leichhardt, gertrude bell, isabella bird, freya stark, ida pfeiffer, alexandra david-neel, ranulph fiennes, jacques piccard, sylvia earle, valentina tereshkova, ann bancroft, tom crean, douglas mawson|mawson, umberto nobile
+
+? Name a style of dance
+refill: ballet, hip hop, salsa, tango, waltz, tap|tap dance
+spinner: swing, jazz, breakdancing|breaking, ballroom, line dancing, square dance, belly dance, cha-cha, foxtrot, polka, lion dance
+pufferfish: flamenco, samba, rumba, merengue, bachata, contemporary, modern dance|modern, the twist, macarena, disco, irish dance|irish step dance, conga, limbo, hula, can-can|cancan, lindy hop, jive, mambo, paso doble, quickstep, zumba, krump, vogue|voguing
+seeker: charleston, bolero, cumbia, kizomba, zouk, lambada, bhangra, kathak, bharatanatyam, haka, clogging, stepping|step, popping, locking, tutting, house, shuffle, electric slide, cupid shuffle, the floss|floss, the worm|worm, the robot|robot, butoh, capoeira, maypole dance, morris dance, highland fling, polonaise, mazurka, minuet, quadrille, gavotte, sarabande
+celestillion: kecak, legong, odissi, kuchipudi, kathakali, manipuri, mohiniyattam, sattriya, garba, dandiya, lavani, ghoomar, yangge, dragon dance, bon odori, cueca, joropo, marinera, son jarocho, jarabe tapatio, danzon, forro, frevo, maracatu, carimbo, gumboot dance, pantsula, kpanlogo, adumu, hora, sirtaki, zeibekiko, tarantella, sardana, jota, fandango, sevillanas, kolo, csardas, hopak, lezginka, attan, dabke
+
+? Name a breakfast food
+refill: eggs, pancakes, waffles, bacon, cereal, toast
+spinner: oatmeal, french toast, sausage, bagel, yogurt, muffin, hash browns, omelette|omelet, scrambled eggs, donut|doughnut, croissant
+pufferfish: granola, grits, biscuits and gravy, breakfast burrito, eggs benedict, smoothie, fruit, avocado toast, english muffin, cinnamon roll, porridge, crepes, cream of wheat, home fries
+seeker: shakshuka, huevos rancheros, chilaquiles, congee, full english breakfast|full english|fry up, black pudding, kippers, beans on toast, quiche, frittata, scone, danish, kolache, scrapple, corned beef hash, chicken and waffles, acai bowl, muesli, overnight oats, poached eggs, dutch baby, belgian waffle
+celestillion: natto, tamagoyaki, nasi lemak, roti canai, idli, dosa, poha, upma, aloo paratha, menemen, ful medames, gallo pinto, migas, pan con tomate, msemen, baghrir, kaya toast, chwee kueh, youtiao, jianbing, xoi, tapsilog, champorado, mangu, bandeja paisa, changua, khachapuri, syrniki, blini, skyr, laverbread, oatcakes, farls
+
+? Name an animal that lives in Africa
+refill: lion, elephant, giraffe, zebra, cheetah, hippo|hippopotamus, rhino|rhinoceros
+spinner: gorilla, leopard, hyena, chimpanzee|chimp, crocodile, flamingo, ostrich, warthog, meerkat, baboon, gazelle, wildebeest|gnu
+pufferfish: cape buffalo|buffalo, antelope, jackal, lemur, mongoose, okapi, impala, kudu, springbok, vulture, cobra, python, black mamba|mamba, chameleon, aardvark, bonobo, mandrill, camel, african wild dog|wild dog|painted dog
+seeker: caracal, serval, eland, oryx|gemsbok, sable antelope, dik-dik, klipspringer, bushbaby|galago, pangolin, honey badger|ratel, aardwolf, fennec fox|fennec, bat-eared fox, secretary bird, shoebill, marabou stork, hornbill, puff adder, nile monitor, dung beetle, tsetse fly, colobus monkey|colobus, vervet monkey|vervet, gelada, topi, hartebeest, bongo, duiker, nyala, sitatunga, lechwe, waterbuck
+celestillion: aye-aye, fossa, tenrec, rock hyrax|hyrax, elephant shrew|sengi, naked mole rat, gerenuk, dibatag, beira, hirola, addax, bontebok, blesbok, oribi, steenbok, grysbok, suni, potto, angwantibo, zorilla, civet, genet, cusimanse, springhare, giant forest hog, red river hog, bushpig, pygmy hippo|pygmy hippopotamus, drill, kipunji, ethiopian wolf, walia ibex, african golden cat, sand cat, black-footed cat
+
+? Name a fictional detective
+refill: sherlock holmes|sherlock, scooby-doo|scooby
+spinner: hercule poirot|poirot, miss marple|marple, nancy drew, inspector gadget, columbo, dick tracy
+pufferfish: the hardy boys|hardy boys, encyclopedia brown, philip marlowe|marlowe, sam spade, inspector clouseau|clouseau, jessica fletcher, thomas magnum|magnum, detective pikachu, ace ventura, adrian monk|monk, shawn spencer, veronica mars, jake peralta, kojak, perry mason, father brown, lisbeth salander, detective conan|conan edogawa, batman
+seeker: lord peter wimsey|peter wimsey, inspector morse|morse, nero wolfe, ellery queen, c auguste dupin|dupin, sergeant cuff, harry hole, kurt wallander|wallander, jane tennison, tommy and tuppence, adam dalgliesh, cordelia gray, precious ramotswe|mma ramotswe, john rebus|rebus, jackson brodie, cormoran strike, harry bosch, alex cross, kinsey millhone, v i warshawski, easy rawlins, spenser, mike hammer, jules maigret|maigret, rust cohle, jimmy mcnulty
+celestillion: judge dee, kogoro akechi, uncle abner, the continental op, lew archer, travis mcgee, inspector ghote, inspector barnaby, vera stanhope, jimmy perez, salvo montalbano|montalbano, aurelio zen, guido brunetti|brunetti, martin beck, erast fandorin, arkady renko, inspector lynley, roderick alleyn, albert campion, gideon fell, dr thorndyke, max carrados, sexton blake, nick and nora charles|nick charles, philo vance, charlie chan, mr moto, hildegarde withers, lucas davenport, kay scarpetta, temperance brennan, sister fidelma, brother cadfael|cadfael, william of baskerville, amelia peabody
+
+? Name a type of sandwich
+refill: grilled cheese, blt, peanut butter and jelly|pb&j|pbj|peanut butter and jam, ham and cheese, turkey, club sandwich|club, sub|submarine|hoagie|hero
+spinner: reuben, philly cheesesteak|cheesesteak, tuna melt|tuna, egg salad, chicken salad, meatball sub, cuban, panini, french dip, sloppy joe, bacon egg and cheese
+pufferfish: monte cristo, po' boy|po boy, muffuletta, banh mi, gyro, croque monsieur, patty melt, pulled pork, caprese, italian sub, roast beef, pastrami, corned beef, lobster roll, fried chicken sandwich, hot dog, chicken parm|chicken parmesan
+seeker: cucumber sandwich, smorrebrod|open-faced sandwich, torta, cemita, pambazo, bocadillo, tramezzino, chip butty, bacon butty, fish finger sandwich, jambon-beurre, pan bagnat, katsu sando, tamago sando, fruit sando, chacarero, choripan, bauru, beef on weck, horseshoe sandwich, hot brown, spiedie, pork tenderloin sandwich, loose meat sandwich|maid-rite, fluffernutter, st paul sandwich
+celestillion: francesinha, zapiekanka, broodje kroket, chivito, barros luco, barros jarpa, butifarra, mitraillette, smorgastarta, vada pav, bun kebab, dabeli, chopped cheese, gatsby, bunny chow, bosna, leberkasesemmel, fischbrotchen, toast hawaii, cudighi, mollete, tripleta, medianoche, elena ruz, frita, pan con chicharron
+
+? Name a card game
+refill: poker, go fish, solitaire, blackjack, war, crazy eights, uno
+spinner: rummy|gin rummy, spades, hearts, old maid, speed, slapjack, bridge, euchre, cribbage, texas hold'em, baccarat, spit
+pufferfish: canasta, pinochle, egyptian ratscrew|egyptian rat screw, spoons, cheat|i doubt it, nertz|nerts, skat, whist, bezique, cassino, piquet, sheepshead, phase 10, skip-bo, exploding kittens, magic the gathering|magic, pokemon trading card game|pokemon, yu-gi-oh, golf, tonk, bourre, hand and foot, kemps, durak
+seeker: ninety-nine, pitch|setback, rook, spite and malice, klondike, freecell, spider solitaire, pyramid, tripeaks, mao, mau mau, schafkopf, jass, belote, french tarot|tarot, scopa, briscola, tressette, mus, truco, chinchon, sueca, fan tan|sevens, big two, dou dizhu, hanafuda, karuta, tien len, pusoy dos, thirty-one|31, faro
+celestillion: tute, julepe, guinote, doppelkopf, binokel, bura, preferans, kalooki, tichu, wizard, pinnacle, ecarte, bouillotte, primero, gleek, cuckoo, brag, newmarket, michigan, pope joan, speculation, commerce, snip snap snorem, beggar my neighbour|beggar-my-neighbor, happy families, authors, cuarenta, conquian, ombre
+
+? Name something associated with Halloween
+refill: pumpkin|jack-o'-lantern, candy, costume|costumes, ghost, witch, trick-or-treat|trick or treating
+spinner: skeleton, bat|bats, black cat, vampire, zombie, haunted house, mummy, spider, broomstick|broom, candy corn, werewolf, monster, devil
+pufferfish: frankenstein|frankenstein's monster, cauldron, tombstone|gravestone, cemetery|graveyard, cobwebs|spiderweb, scarecrow, full moon, owl, raven|crow, bobbing for apples, caramel apples|candy apples, corn maze, hayride, goblin, ghoul, grim reaper, coffin, witch hat, costume party
+seeker: samhain, all hallows' eve, day of the dead|dia de los muertos, sugar skull, monster mash, thriller, hocus pocus, the great pumpkin, headless horseman, sleepy hollow, michael myers, jack skellington, beetlejuice, dracula, ouija board, tarot cards, seance, banshee, poltergeist, fog machine, glow sticks, pillowcase
+celestillion: soul cakes|souling, guising, mischief night|devil's night, colcannon, barmbrack, snap-apple night, punkie night, turnip lantern, stingy jack, will-o'-the-wisp, bonfire, all saints' day, hop-tu-naa, mumming, popcorn balls, toffee apples
+
+? Name a band or music group
+refill: the beatles, queen, the rolling stones, coldplay, nirvana
+spinner: led zeppelin, pink floyd, ac/dc, metallica, u2, abba, maroon 5, imagine dragons, bts, one direction, the beach boys, aerosmith, guns n' roses|guns and roses
+pufferfish: radiohead, red hot chili peppers, green day, foo fighters, the who, linkin park, fleetwood mac, the eagles, bon jovi, kiss, van halen, the doors, oasis, blur, the cure, arctic monkeys, paramore, fall out boy, the killers, blink-182, weezer, pearl jam, black sabbath, iron maiden, def leppard, journey, the police, depeche mode, duran duran, the clash, sex pistols, ramones, the strokes, gorillaz, daft punk, blackpink, the 1975, twenty one pilots, panic! at the disco, my chemical romance, the smiths
+seeker: talking heads, joy division, new order, the velvet underground, the stooges, sonic youth, pixies, r.e.m., the kinks, the zombies, the yardbirds, cream, the byrds, creedence clearwater revival|ccr, grateful dead, jefferson airplane, the band, steely dan, chicago, earth wind & fire, the jackson 5, the supremes, the temptations, wu-tang clan, run-dmc, public enemy, n.w.a, outkast, a tribe called quest, fugees, tlc, destiny's child, spice girls, backstreet boys, nsync, rush, yes, genesis, king crimson, jethro tull, deep purple, motorhead, slayer, megadeth, tool, rage against the machine, system of a down, slipknot, korn, deftones, nine inch nails, the white stripes, the black keys, vampire weekend, arcade fire, the national, fleet foxes, tame impala, mgmt, muse, kings of leon, kraftwerk, sleater-kinney
+celestillion: can, neu!, faust, tangerine dream, cocteau twins, slowdive, my bloody valentine, galaxie 500, the jesus and mary chain, the fall, wire, gang of four, television, minutemen, black flag, dead kennedys, bad brains, fugazi, minor threat, the raincoats, the slits, x-ray spex, young marble giants, the go-betweens, the chills, the clean, os mutantes, tinariwen, khruangbin, boris, shonen knife, boredoms, stereolab, broadcast, slint, tortoise, godspeed you! black emperor, mogwai, sigur ros, low, unwound, bikini kill
+
+? Name a famous athlete
+refill: michael jordan, lebron james|lebron, serena williams, usain bolt, tom brady, cristiano ronaldo, lionel messi|messi
+spinner: tiger woods, muhammad ali, kobe bryant|kobe, michael phelps, simone biles, roger federer|federer, wayne gretzky|gretzky, babe ruth, pele, stephen curry|steph curry, shaquille o'neal|shaq, rafael nadal|nadal, novak djokovic|djokovic
+pufferfish: kylian mbappe|mbappe, patrick mahomes|mahomes, shohei ohtani|ohtani, caitlin clark, venus williams, mike tyson, jackie robinson, jesse owens, carl lewis, magic johnson, larry bird, kareem abdul-jabbar|kareem, wilt chamberlain, bill russell, diego maradona|maradona, zinedine zidane|zidane, david beckham|beckham, lewis hamilton, michael schumacher, ayrton senna|senna, tony hawk, shaun white, lindsey vonn, mia hamm, megan rapinoe, peyton manning, jerry rice, walter payton, joe montana, derek jeter, aaron judge, sidney crosby, connor mcdavid, alex ovechkin|ovechkin, giannis antetokounmpo|giannis, nikola jokic|jokic, victor wembanyama|wembanyama, kevin durant, bo jackson, deion sanders, mikaela shiffrin, mondo duplantis|armand duplantis, yao ming, dirk nowitzki
+seeker: nadia comaneci, jim thorpe, florence griffith joyner|flo-jo, jackie joyner-kersee, wilma rudolph, mark spitz, eliud kipchoge|kipchoge, haile gebrselassie, mo farah, sebastian coe, katie ledecky|ledecky, steffi graf, martina navratilova, billie jean king, chris evert, bjorn borg, john mcenroe, pete sampras, andre agassi, rod laver, jack nicklaus, arnold palmer, annika sorenstam, gordie howe, bobby orr, mario lemieux, ty cobb, hank aaron, willie mays, mickey mantle, ted williams, lou gehrig, roberto clemente, ichiro suzuki|ichiro, sachin tendulkar, don bradman, virat kohli, brian lara, sugar ray robinson, sugar ray leonard, joe louis, manny pacquiao, floyd mayweather, ronda rousey, conor mcgregor, johan cruyff, franz beckenbauer, eusebio, alfredo di stefano, ferenc puskas, george best, ronaldinho, marta, abby wambach, hakeem olajuwon
+celestillion: paavo nurmi, emil zatopek, abebe bikila, fanny blankers-koen, babe didrikson zaharias|babe zaharias, larisa latynina, vera caslavska, teofilo stevenson, laszlo papp, aladar gerevich, birgit fischer, bjorn daehlie, marit bjorgen, ole einar bjorndalen, ireen wust, bonnie blair, eric heiden, sonja henie, irina rodnina, katarina witt, ingemar stenmark, hermann maier, alberto tomba, jean-claude killy, dawn fraser, ian thorpe, kristin otto, krisztina egerszegi, alexander karelin, saori yoshida, sifan hassan, faith kipyegon, kenenisa bekele, tirunesh dibaba, valentina vezzali, edoardo mangiarotti, oscar robertson, jerry west, bob cousy, pete maravich, george mikan, sheryl swoopes, lisa leslie, diana taurasi, sue bird, cynthia cooper
+
+? Name a type of cloud
+refill: cumulus, cirrus, stratus
+spinner: cumulonimbus, nimbostratus, storm cloud|rain cloud
+pufferfish: altocumulus, altostratus, cirrocumulus, cirrostratus, stratocumulus, fog
+seeker: lenticular|lenticular cloud, mammatus|mamma, shelf cloud, wall cloud|murus, funnel cloud, contrail, noctilucent, pileus|cap cloud, anvil|incus, arcus, roll cloud
+celestillion: kelvin-helmholtz|fluctus, asperitas|undulatus asperatus, nacreous|polar stratospheric cloud, pyrocumulus|flammagenitus, homogenitus, cauda|tail cloud, velum, pannus, virga, praecipitatio, tuba, castellanus, floccus, fractus, uncinus, spissatus, morning glory cloud, fallstreak hole|hole punch cloud|cavum, actinoform, banner cloud
+
+? Name a famous building, monument, or wonder of the world
+refill: great wall of china|great wall, pyramids of giza|pyramids|great pyramid, eiffel tower, statue of liberty, taj mahal, colosseum
+spinner: machu picchu, stonehenge, christ the redeemer, big ben, petra, empire state building, golden gate bridge, sydney opera house, leaning tower of pisa|tower of pisa
+pufferfish: chichen itza, angkor wat, burj khalifa, mount rushmore, parthenon, acropolis, sagrada familia, kremlin, red square, st basil's cathedral, forbidden city, hagia sophia, notre-dame, tower of london, tower bridge, buckingham palace, louvre, versailles, alhambra, neuschwanstein, hoover dam, space needle, cn tower, gateway arch, white house, lincoln memorial, washington monument, brooklyn bridge, panama canal, great sphinx|sphinx
+seeker: hanging gardens of babylon, colossus of rhodes, lighthouse of alexandria|pharos, temple of artemis, statue of zeus at olympia, mausoleum at halicarnassus, terracotta army, moai|easter island heads, borobudur, potala palace, mont saint-michel, pantheon, trevi fountain, st peter's basilica, sistine chapel, kinkaku-ji|golden pavilion, fushimi inari, itsukushima, himeji castle, petronas towers, marina bay sands, shwedagon pagoda, abu simbel, karnak, valley of the kings, great zimbabwe, teotihuacan, tikal, nazca lines, palace of westminster, edinburgh castle, cologne cathedral, atomium, brandenburg gate, charles bridge, burj al arab, lotus temple, golden temple, qutub minar, red fort, hawa mahal, sigiriya, bagan, prambanan, persepolis, sheikh zayed mosque, blue mosque, topkapi palace, gobekli tepe
+celestillion: great mosque of djenne|djenne mosque, ellora caves, ajanta caves, kailasa temple, mahabodhi temple, mohenjo-daro, ziggurat of ur, palmyra, baalbek, leptis magna, knossos, mycenae, delphi, ephesus, hattusa, nan madol, caral, chan chan, sacsayhuaman, ollantaytambo, kuelap, mesa verde, cahokia, chaco canyon, newgrange, skara brae, carnac stones, hagar qim, ggantija, sanchi stupa, mogao caves, leshan giant buddha, hanging monastery, fatehpur sikri, chand baori, rani ki vav, nubian pyramids|meroe, stelae of aksum|aksum, kilwa kisiwani, ait benhaddou, lalibela
+
+? Name something with wheels
+refill: car, bicycle|bike, bus, truck, skateboard, train
+spinner: motorcycle|motorbike, scooter, wagon, wheelchair, shopping cart|trolley, stroller|pram, roller skates, wheelbarrow, tricycle|trike, airplane|plane
+pufferfish: tractor, van, taxi, ambulance, fire truck, school bus, golf cart, forklift, rollerblades|inline skates, office chair, suitcase|luggage, semi truck|18-wheeler|eighteen wheeler, unicycle, segway, hoverboard, go-kart, atv|quad bike, rv|motorhome|camper, tram|streetcar, chariot, carriage, lawn mower
+seeker: monster truck, dump truck, cement mixer, garbage truck, tow truck, limousine|limo, pickup truck, jeep, dune buggy, rickshaw, tuk-tuk, pedicab, penny-farthing, tandem bicycle|tandem, recumbent bike, hand truck|dolly, pallet jack, hospital bed, gurney, rollator|wheeled walker, mobility scooter, longboard, roller coaster, cable car, trolleybus, locomotive, landing gear, mars rover|rover, lunar rover, soapbox car, stagecoach, covered wagon, horse and buggy|buggy
+celestillion: velocipede, draisine|dandy horse, ox cart|bullock cart, tonga, jinrikisha, cyclo, jeepney, songthaew, matatu, dala dala, marshrutka, surrey, phaeton, landau, hansom cab|hansom, brougham, barouche, gig, cabriolet, curricle, dogcart, tumbril, caisson, gun carriage, siege tower, lunokhod, velomobile, monowheel, zamboni|ice resurfacer, street sweeper, hearse, popemobile
+
+? Name a candy
+refill: m&m's|m&ms, snickers, kit kat|kitkat, skittles, reese's|reese's peanut butter cups, twix, hershey's|hershey bar
+spinner: starburst, sour patch kids, jolly ranchers|jolly rancher, gummy bears, twizzlers, milky way, 3 musketeers|three musketeers, butterfinger, nerds, swedish fish, airheads, lollipop, cotton candy, jelly beans, tootsie roll, warheads, laffy taffy, peeps, candy corn, smarties
+pufferfish: almond joy, mounds, baby ruth, payday, whoppers, junior mints, milk duds, dots, mike and ike, hot tamales, red vines, everlasting gobstopper|gobstopper, pop rocks, fun dip, pixy stix, ring pop, push pop, blow pop, dum dums, life savers, werther's, york peppermint patty, heath, rolo, toblerone, ferrero rocher, haribo, trolli, kinder bueno|kinder, cadbury, nestle crunch|crunch, 100 grand, pocky, hi-chew
+seeker: good & plenty, jujubes, now and later, razzles, sugar daddy, bit-o-honey, chuckles, charleston chew, abba-zaba, necco wafers, candy buttons, wax lips, pez, boston baked beans, lemonheads, sweetarts, runts, big league chew, zero bar, oh henry, mr goodbar, krackel, take 5, cow tales, sugar babies, chick-o-stick, clark bar, goo goo cluster, turkish delight, flake, crunchie, aero, maltesers, curly wurly, double decker, wispa, lion bar, marzipan
+celestillion: salmiakki|salmiak|salty licorice, botan rice candy, white rabbit, haw flakes, ramune candy, konpeito, kasugai, milkita, pulparindo, vero mango, lucas, duvalin, mazapan, glorias, obleas, borrachitos, alegria, cocadas, palanqueta, halva|halwa, lokum, chikki, gajak, gaz, sohan, pastila, zefir, korovka, ptichye moloko|bird's milk, krowki, ahoj-brause, nonpareils, horehound, clove candy, teaberry, valomilk, idaho spud, cherry mash, mallo cup
