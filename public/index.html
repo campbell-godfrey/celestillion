@@ -115,6 +115,18 @@ input[type=text], input[type=password] { width: 100%; padding: 10px 12px; border
 
 
 
+/* ---------- Logo link ---------- */
+.home-link { color: inherit; text-decoration: none; -webkit-text-fill-color: inherit; }
+.home-link:focus-visible { outline: 3px solid var(--p2); outline-offset: 4px; border-radius: 4px; }
+
+/* ---------- Answers with an image: blurred, darkened background behind the text ---------- */
+.has-img { position: relative; isolation: isolate; overflow: hidden; color: #fff !important; text-shadow: 0 1px 3px rgba(0,0,0,.75); }
+.has-img::before { content: ""; position: absolute; inset: -6px; z-index: -1; background: #1b2a38 var(--img) center / cover no-repeat; filter: blur(2.5px) brightness(.62); }
+.has-img small { color: rgba(255,255,255,.8) !important; }
+.answer-img { display: inline-block; padding: 6px 12px; border-radius: 10px; }
+.dres-answer { padding: 18px 26px; border-radius: 14px; font-size: 22px; min-width: min(280px, 100%); }
+.said.has-img, .said-list .chip.has-img { border-radius: 10px; padding: 7px 12px; }
+
 /* ---------- Accounts ---------- */
 :root { --discord: #5865f2; --discord-fg: #ffffff; }
 .head-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
@@ -214,7 +226,7 @@ body { margin: 0; }
 <body>
 <div class="wrap">
   <header>
-    <h1>Celestillion</h1>
+    <h1><a href="/" class="home-link" aria-label="Celestillion home">Celestillion</a></h1>
     <div class="head-right">
       <p class="sub"><span id="modeLine">A new daily challenge every day, plus multiplayer word games with friends.</span> <span class="conn" id="conn">Connecting…</span></p>
       <nav id="acct" aria-label="Account"></nav>

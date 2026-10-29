@@ -29,6 +29,28 @@ assert.strictEqual(D.matchAnswer(painters, "Salvador Dalí").tier, "spinner", "a
 const heroes = questions.find(q => q.text.startsWith("Name a superhero"));
 assert.strictEqual(D.matchAnswer(heroes, "Spider Man").tier, "refill", "spacing is ignored");
 
+// Optional answer images
+{
+  const tmp = path.join(os.tmpdir(), `daily-img-${process.pid}.txt`);
+  fs.writeFileSync(tmp, [
+    "? Name a moon",
+    "refill: moon|the moon{https://example.com/moon.jpg?w=400,h=300}, luna two",
+    "spinner: titan{https://example.com/titan.png}, europa",
+    "pufferfish: io", "seeker: triton", "celestillion: kerberos{https://example.com/k.jpg}",
+  ].join("\n"));
+  const [mq] = D.loadQuestions(tmp);
+  assert.strictEqual(mq.answers.length, 7, "a comma inside an image link doesn't split the list");
+  assert.strictEqual(D.matchAnswer(mq, "the moon").image, "https://example.com/moon.jpg?w=400,h=300", "image belongs to the answer and its alternates");
+  assert.strictEqual(D.matchAnswer(mq, "Titan").image, "https://example.com/titan.png");
+  assert.strictEqual(D.matchAnswer(mq, "europa").image, null, "answers without an image have none");
+  assert.strictEqual(D.matchAnswer(mq, "kerberos").display, "kerberos", "the link isn't part of the answer text");
+  fs.writeFileSync(tmp, "? Q\nrefill: a{javascript:alert(1)}\nspinner: b\npufferfish: c\nseeker: d\ncelestillion: e");
+  assert.throws(() => D.loadQuestions(tmp), /usable image link/, "only http(s) links are allowed");
+  fs.writeFileSync(tmp, "? Q\nrefill: a{https://x.com/a b.jpg}");
+  assert.throws(() => D.loadQuestions(tmp), /usable image link/, "links with spaces are refused");
+  fs.rmSync(tmp);
+}
+
 // Day rotation and reset
 const day1 = Date.UTC(2026, 9, 29, 12, 0, 0);
 assert.strictEqual(D.dayNumber(day1), 1);

@@ -122,6 +122,10 @@
 
   /* ---------- Rendering ---------- */
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  // Answers with an image get it as a blurred, darkened background. The server only sends plain https links.
+  const safeImage = url => (typeof url === "string" && /^https?:\/\/[^\s"'()<>\\{}]+$/i.test(url) ? url : null);
+  const imgStyle = url => (safeImage(url) ? `--img:url(&quot;${esc(url)}&quot;);` : "");
+  const imgClass = url => (safeImage(url) ? " has-img" : "");
   const playerList = () => S.room?.players ?? [];
   const nameOf = id => playerList().find(p => p.id === id)?.name || "Player";
   function colorOf(id) {
@@ -179,6 +183,7 @@
           <li>Wrong answers don't cost anything, so keep guessing until the clock runs out.</li>
           <li>Run out of time and you lose one of your 3 hearts and sit out the rest of the round.</li>
           <li>After the 2nd heart is lost in a round, play continues until it gets back to whoever started the round. Then a new question begins and everyone is back in.</li>
+          <li>If only one player is left in a round, their next correct answer ends it.</li>
           <li>The last player with hearts left wins.</li>
         </ul>
       </section>
@@ -213,8 +218,8 @@
     const now = Date.now() + S.offset;
     const left = Math.max(0, g.turnEndsAt - now);
     const heartRow = id => `${"♥".repeat(Math.max(0, g.hearts[id]))}<span class="lost">${"♥".repeat(Math.max(0, r.hearts - g.hearts[id]))}</span>`;
-    const chips = list => list.map(s => `<li class="said" style="--pc:${colorOf(s.pid)}"><span>${esc(s.text)}</span><small>${esc(nameOf(s.pid))}</small></li>`).join("");
-    const missedChips = list => list.map(m => `<li class="chip t-${m.tier}">${esc(m.text)}</li>`).join("");
+    const chips = list => list.map(s => `<li class="said${imgClass(s.image)}" style="--pc:${colorOf(s.pid)};${imgStyle(s.image)}"><span>${esc(s.text)}</span><small>${esc(nameOf(s.pid))}</small></li>`).join("");
+    const missedChips = list => list.map(m => `<li class="chip t-${m.tier}${imgClass(m.image)}" style="${imgStyle(m.image)}">${esc(m.text)}</li>`).join("");
 
     let main;
     if (phase === "turn") {
@@ -273,6 +278,7 @@
             <li>Wrong answers don't cost anything. Keep trying until time runs out.</li>
             <li>Run out of time and you lose a heart and sit out the rest of the round.</li>
             <li>After the 2nd heart is lost, the round ends when the turn gets back to whoever started it.</li>
+            <li>If only one player is left in the round, their next correct answer ends it.</li>
           </ul>
         </section>
         <p class="err">${esc(S.error)}</p>
@@ -404,13 +410,14 @@
         <p class="label">Question ${st.results.length} of ${st.perDay}</p>
         <div class="dres-pts">${t ? "+" + t.points : "0"}</div>
         <div class="dres-tier">${t ? esc(t.name) : r.timedOut ? "Time's up" : "Not on the list"}</div>
+        ${t && safeImage(r.image) ? `<div class="dres-answer has-img" style="${imgStyle(r.image)}">${esc(r.answer)}</div>` : ""}
         <p class="mode-note">${r.text ? `You answered “${esc(r.text)}”${t && r.answer && r.answer.toLowerCase() !== r.text.toLowerCase() ? `, counted as “${esc(r.answer)}”` : ""}.` : "You didn't answer in time."}</p>
         <div class="row"><button id="dnext">${last ? "See today's results" : "Next question"}</button></div>
       </section>`;
     } else {
       const rows = st.results.map((r, i) => {
         const t = tierOf(r.tier);
-        return `<li><span class="dsum-q">${i + 1}. ${esc(r.question)}</span><span class="dsum-a">${r.text ? esc(r.answer || r.text) : "No answer"}</span><span class="chip ${t ? "t-" + t.key : "miss"}">${t ? esc(t.name) : "Miss"}</span><span class="dsum-p">${r.points}</span></li>`;
+        return `<li><span class="dsum-q">${i + 1}. ${esc(r.question)}</span><span class="dsum-a">${r.text ? (t && safeImage(r.image) ? `<span class="answer-img has-img" style="${imgStyle(r.image)}">${esc(r.answer)}</span>` : esc(r.answer || r.text)) : "No answer"}</span><span class="chip ${t ? "t-" + t.key : "miss"}">${t ? esc(t.name) : "Miss"}</span><span class="dsum-p">${r.points}</span></li>`;
       }).join("");
       const lbRows = list => list.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${esc(e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
       const lb = st.leaderboard.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${esc(e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");

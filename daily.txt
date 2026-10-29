@@ -4,6 +4,11 @@
 # Then one line per tier: refill (15), spinner (30), pufferfish (60), seeker (85), celestillion (100).
 # Separate answers with commas. Put other accepted spellings of the same answer after | (no commas inside answers).
 # Common answers belong in refill; the most obscure correct answers belong in celestillion.
+#
+# Optional image: put a link in curly braces right after an answer (and after its | spellings).
+# The picture appears behind that answer, blurred and darkened, wherever the answer is shown.
+#   refill: moon|the moon{https://example.com/moon.jpg}, luna
+# Links must start with https:// and can't contain spaces or quotes. Answers without a link look as usual.
 # Five questions are used per day, in the order below. When the list runs out it starts again from the top.
 # Lines starting with # are ignored.
 

@@ -69,11 +69,9 @@ function freshAnswer(st) {
   assert.strictEqual(st.game.order[st.game.turn], a.you);
   await call(a, "guess", { text: freshAnswer(st) });
   await wait(50);
-  assert.strictEqual(a.latest.game.order[a.latest.game.turn], a.you, "Alice keeps answering alone");
-  await wait(2500);
   st = a.latest;
-  assert.strictEqual(st.game.hearts[a.you], 2);
-  assert.strictEqual(st.game.phase, "between", "round ends after the 2nd heart is lost");
+  assert.strictEqual(st.game.phase, "between", "with only Alice left, her correct answer ends the round");
+  assert.strictEqual(st.game.hearts[a.you], 3);
   assert.ok(st.game.lastRound.said.length === 2 && st.game.lastRound.missed.length > 0);
 
   // Next round: new question, Bob starts, everyone back in.

@@ -5,6 +5,7 @@
 // Running out of time costs a heart and sits that player out for the rest of the round.
 // Once two players have lost a heart in a round, play continues until the turn reaches the
 // player who started the round; then a new question begins and everyone with hearts is back in.
+// If only one player is left in the round, the round ends as soon as they give one correct answer.
 // The last player with hearts left wins.
 const { matchAnswer } = require("./daily");
 
@@ -49,8 +50,8 @@ function endRound(g, now) {
   const order = ["celestillion", "seeker", "pufferfish", "spinner", "refill"];
   // A few answers nobody gave, rarest first, to show between rounds.
   const missed = order.flatMap(t => q.answers.filter(a => a.tier === t && !said.has(a.display))).slice(0, 8)
-    .map(a => ({ text: a.display, tier: a.tier }));
-  g.lastRound = { roundNo: g.roundNo, question: q.text, said: g.round.said.map(s => ({ text: s.answer, pid: s.pid })), missed, total: q.answers.length };
+    .map(a => ({ text: a.display, tier: a.tier, image: a.image }));
+  g.lastRound = { roundNo: g.roundNo, question: q.text, said: g.round.said.map(s => ({ text: s.answer, pid: s.pid, image: s.image })), missed, total: q.answers.length };
   g.phase = "between";
   g.nextRoundAt = now + ROUND_PAUSE_MS;
 }
@@ -97,8 +98,11 @@ function guess(g, text, now = Date.now()) {
   if (!hit) return { ok: false, why: "not on the list", text };
   const prior = g.round.said.find(s => s.answer === hit.display);
   if (prior) return { ok: false, why: "already said", text, answer: hit.display, by: prior.pid };
-  g.round.said.push({ answer: hit.display, tier: hit.tier, pid, text });
+  g.round.said.push({ answer: hit.display, tier: hit.tier, pid, text, image: hit.image });
   g.log = [{ pid, text: hit.display, ok: true, round: g.roundNo }, ...g.log].slice(0, 30);
+  // If this player is the only one left in the round, one correct answer finishes it.
+  // (Not in solo games, where there's never anyone else.)
+  if (g.order.length > 1 && g.order.filter(id => inRound(g, id)).length === 1) { endRound(g, now); return { ok: true, answer: hit.display, text }; }
   advance(g, now);
   return { ok: true, answer: hit.display, text };
 }

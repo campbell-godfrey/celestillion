@@ -55,7 +55,11 @@ function lev(a, b, max) {
 // How many typos an answer of this length tolerates.
 const tolerance = len => (len >= 12 ? 2 : len >= 6 ? 1 : 0);
 
-function loadQuestions(file = path.join(__dirname, "daily.txt")) {
+// Image links must be plain http(s) URLs with no spaces, quotes, brackets or backslashes,
+// so they're always safe to place in the page's CSS.
+const IMAGE_RE = /^https?:\/\/[^\s"'()<>\\{}]+$/i;
+
+function loadQuestions(file = process.env.DAILY_FILE || path.join(__dirname, "daily.txt")) {
   const questions = [];
   let q = null;
   fs.readFileSync(file, "utf8").split(/\r?\n/).forEach((raw, i) => {
@@ -70,9 +74,16 @@ function loadQuestions(file = path.join(__dirname, "daily.txt")) {
     if (!m || !q) throw new Error(`daily.txt line ${i + 1}: expected "? question" or "tier: answers"`);
     const tier = TIER_BY_KEY[m[1].toLowerCase()];
     if (!tier) throw new Error(`daily.txt line ${i + 1}: unknown tier "${m[1]}"`);
-    for (const item of m[2].split(",")) {
-      const alts = item.split("|").map(s => s.trim()).filter(Boolean);
-      if (alts.length) q.answers.push({ display: alts[0], tier: tier.key, keys: [...new Set(alts.map(squash))] });
+    // Pull out optional {image links} first, so commas inside a link don't split the answer list.
+    const images = [];
+    const list = m[2].replace(/\{([^}]*)\}/g, (_, url) => { images.push(url.trim()); return `\u0000${images.length - 1}\u0000`; });
+    for (const item of list.split(",")) {
+      let image = null;
+      const text = item.replace(/\u0000(\d+)\u0000/g, (_, n) => { image = images[Number(n)]; return ""; });
+      if (image && !IMAGE_RE.test(image)) throw new Error(`daily.txt line ${i + 1}: "${image}" isn't a usable image link (it must start with https:// and have no spaces or quotes)`);
+      const alts = text.split("|").map(s => s.trim()).filter(Boolean);
+      if (alts.length) q.answers.push({ display: alts[0], tier: tier.key, keys: [...new Set(alts.map(squash))], image: image || null });
+      else if (image) throw new Error(`daily.txt line ${i + 1}: an image link needs an answer in front of it`);
     }
   });
   if (!questions.length) throw new Error("daily.txt has no questions");
@@ -235,7 +246,7 @@ function createDaily({ questions = loadQuestions(), store = createStore(), now =
       text = String(text ?? "").trim().slice(0, 80);
       const hit = text ? matchAnswer(q, text) : null;
       const result = hit
-        ? { text, answer: hit.display, points: TIER_BY_KEY[hit.tier].points, tier: hit.tier }
+        ? { text, answer: hit.display, points: TIER_BY_KEY[hit.tier].points, tier: hit.tier, image: hit.image }
         : { text, points: 0, tier: null, timedOut: !text };
       run.results.push(result);
       run.current = null;

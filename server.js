@@ -270,7 +270,7 @@ function view(room) {
       roundNo: g.roundNo, nextRoundAt: g.nextRoundAt, winner: g.winner, log: g.log,
       // Only the question and the answers already given this round are sent; the answer list stays on the server.
       round: r && { question: r.question.text, starter: r.starter, out: r.out, losses: r.losses,
-                    said: r.said.map(s => ({ text: s.answer, pid: s.pid })) },
+                    said: r.said.map(s => ({ text: s.answer, pid: s.pid, image: s.image })) },
       lastRound: g.lastRound,
     },
   };

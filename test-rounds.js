@@ -61,17 +61,44 @@ G.timeout(g, t);                       // A loses last heart
 assert.strictEqual(g.status, "over");
 assert.strictEqual(g.winner, "B", "the last surviving player wins");
 
-// ---- Two players: one sits out, the other plays alone until they also time out ----
+// ---- Two players: once one sits out, the other's next correct answer ends the round ----
 g = G.newGame(["A", "B"], Q1, t);
 G.guess(g, "apple", t);                // A
 G.timeout(g, t);                       // B (1st loss)
 assert.strictEqual(cur(g), "A");
-G.guess(g, "banana", t);               // A keeps going alone
-assert.strictEqual(cur(g), "A");
-G.timeout(g, t);                       // A (2nd loss)
-assert.strictEqual(g.phase, "between", "round ends when nobody is left in it");
+assert.strictEqual(G.guess(g, "potato", t).ok, false, "a wrong answer from the last player doesn't end the round");
+assert.strictEqual(g.phase, "turn");
+G.guess(g, "banana", t);               // A is the only one left and answers correctly
+assert.strictEqual(g.phase, "between", "one correct answer from the last player ends the round");
+assert.deepStrictEqual(g.hearts, { A: 3, B: 2 });
 G.startRound(g, Q2, t);
 assert.strictEqual(cur(g), "B", "B starts round 2");
+
+// ---- The last player in the round can also time out instead ----
+g = G.newGame(["A", "B"], Q1, t);
+G.timeout(g, t);                       // A (1st loss)
+G.timeout(g, t);                       // B (2nd loss)
+assert.strictEqual(g.phase, "between", "round ends when nobody is left in it");
+
+// ---- Three players: the rule kicks in only when one is left, not two ----
+g = G.newGame(["A", "B", "C"], Q1, t);
+G.timeout(g, t);                       // A sits out; B and C still in
+G.guess(g, "apple", t);                // B
+assert.strictEqual(g.phase, "turn", "two players still in: the round goes on");
+assert.strictEqual(cur(g), "C");
+G.timeout(g, t);                       // C sits out (2nd loss); only B left, and the starter A is next
+assert.strictEqual(g.phase, "between");
+g = G.newGame(["A", "B", "C"], Q1, t);
+g.hearts.C = 0;                        // C already out of the game
+G.timeout(g, t);                       // A sits out, B is the only one left
+assert.strictEqual(cur(g), "B");
+G.guess(g, "fig", t);
+assert.strictEqual(g.phase, "between", "players out of the game don't count as still in the round");
+
+// ---- Solo games keep going on the same question ----
+g = G.newGame(["A"], Q1, t);
+G.guess(g, "apple", t);
+assert.strictEqual(g.phase, "turn", "solo: a correct answer doesn't end the round");
 
 // ---- Eliminated players are skipped as starters and in turn order ----
 g = G.newGame(["A", "B", "C"], Q1, t);
