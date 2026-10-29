@@ -1,7 +1,7 @@
 // Phrase Hunt browser client. The server holds the answers and runs the game;
 // this file only sends actions and draws whatever state the server broadcasts.
 (() => {
-  let TURN_MS = 30000;
+  let TURN_MS = 20000;
   const COLORS = ["--p1", "--p2", "--p3", "--p4", "--p5", "--p6"];
   const socket = io();
 
@@ -31,6 +31,7 @@
     S.connected = true;
     const r = await call("hello", { token });
     if (r.ok) S.you = r.you;
+    if (r.displayName) savedName = r.displayName;
     if (S.code && savedName) {
       const j = await call("join", { code: S.code, name: savedName });
       if (!j.ok) { S.error = j.error; S.code = null; S.room = null; }
@@ -65,6 +66,7 @@
 
   /* ---------- Actions ---------- */
   function readName() {
+    if (A.user) return A.user.displayName;
     const n = (document.getElementById("nm")?.value || "").trim();
     if (!n) throw new Error("Enter your name first.");
     savedName = n;
@@ -133,11 +135,15 @@
     conn.textContent = S.connected ? "" : "Connecting to the server…";
     conn.classList.toggle("bad", !S.connected);
 
+    const acct = document.getElementById("acct");
+    if (acct) acct.innerHTML = viewAccountButton();
     const app = document.getElementById("app");
     const focusId = document.activeElement?.id;
     const draft = document.getElementById("guess")?.value;
-    const typed = { nm: document.getElementById("nm")?.value, jc: document.getElementById("jc")?.value, dnm: document.getElementById("dnm")?.value, danswer: document.getElementById("danswer")?.value };
-    if (D.mode === "daily") app.innerHTML = viewDaily();
+    const typed = { nm: document.getElementById("nm")?.value, jc: document.getElementById("jc")?.value, dnm: document.getElementById("dnm")?.value, danswer: document.getElementById("danswer")?.value, au: document.getElementById("au")?.value, fname: document.getElementById("fname")?.value };
+    if (A.view === "login" && !A.user) app.innerHTML = viewLogin();
+    else if (A.view === "account" || (A.view === "login" && A.user)) app.innerHTML = viewAccount();
+    else if (D.mode === "daily") app.innerHTML = viewDaily();
     else if (!S.code || !S.room) app.innerHTML = viewStart();
     else if (S.room.status === "lobby") app.innerHTML = viewLobby();
     else app.innerHTML = viewGame();
@@ -151,14 +157,15 @@
     else document.getElementById("danswer")?.focus();
     wire();
     wireDaily();
+    wireAuth();
   }
 
   function viewStart() {
     return `${viewDailyCard()}<div class="lobby">
       <section class="panel">
         <h2>Play with friends</h2>
-        <label class="label" for="nm">Your name</label>
-        <input type="text" id="nm" maxlength="18" value="${esc(savedName)}" placeholder="e.g. Sam">
+        ${A.user ? `<p class="mode-note">Playing as <b>${esc(A.user.displayName)}</b>.</p>` : `<label class="label" for="nm">Your name</label>
+        <input type="text" id="nm" maxlength="18" value="${esc(savedName)}" placeholder="e.g. Sam">`}
         <div class="row"><button id="create" ${S.connected ? "" : "disabled"}>Create a room</button></div>
         <label class="label" for="jc">Or join with a room code</label>
         <div class="row"><input type="text" id="jc" maxlength="4" placeholder="ABCD" style="text-transform:uppercase;font-family:var(--mono)"><button class="ghost" id="join" ${S.connected ? "" : "disabled"}>Join</button></div>
@@ -352,7 +359,7 @@
     const st = D.dstate;
     const played = st?.results.length ?? 0;
     const label = !st ? "Loading today's challenge…"
-      : st.done ? `You scored ${st.total} of ${maxScore()} today.`
+      : st.done ? "You've played today's challenge."
       : played ? `You're on question ${played + 1} of ${st.perDay}.`
       : `${st.perDay} new questions. ${st.answerMs / 1000} seconds and one answer for each.`;
     const btn = !st ? "" : st.done ? "See your results" : played ? "Continue" : "Play today's challenge";
@@ -361,8 +368,7 @@
         <div><p class="label">Daily challenge${st ? " · #" + st.day : ""}</p><h2>${esc(label)}</h2></div>
         <p class="mode-note">New questions in <span class="reset-in">${st ? untilReset() : "…"}</span></p>
       </div>
-      ${tierLegend()}
-      ${st && !st.done && !played ? `<div class="row"><input type="text" id="dnm" maxlength="18" value="${esc(savedName)}" placeholder="Your name for the leaderboard" aria-label="Your name"><button id="dplay">${btn}</button></div>`
+      ${st && !st.done && !played && !A.user ? `<div class="row"><input type="text" id="dnm" maxlength="18" value="${esc(savedName)}" placeholder="Your name for the leaderboard" aria-label="Your name"><button id="dplay">${btn}</button></div>`
         : st ? `<div class="row"><button id="dplay">${btn}</button></div>` : ""}
       ${D.error ? `<p class="err">${esc(D.error)}</p>` : ""}
     </section>`;
@@ -406,6 +412,7 @@
         const t = tierOf(r.tier);
         return `<li><span class="dsum-q">${i + 1}. ${esc(r.question)}</span><span class="dsum-a">${r.text ? esc(r.answer || r.text) : "No answer"}</span><span class="chip ${t ? "t-" + t.key : "miss"}">${t ? esc(t.name) : "Miss"}</span><span class="dsum-p">${r.points}</span></li>`;
       }).join("");
+      const lbRows = list => list.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${esc(e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
       const lb = st.leaderboard.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${esc(e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
       body = `<div class="dsum">
         <section class="panel">
@@ -421,8 +428,10 @@
             <div class="row"><button id="dshare">${D.copied ? "Copied" : "Copy"}</button></div>
           </section>
           <section class="panel">
-            <p class="label">Today's leaderboard</p>
-            <ol class="lb">${lb || `<li class="mode-note">No scores yet.</li>`}</ol>
+            <div class="lb-head"><p class="label">Today's leaderboard</p>
+              ${st.friendsBoard ? `<div class="tabs small-tabs" role="tablist"><button role="tab" class="tab ${A.lbTab === "all" ? "on" : ""}" id="lbAll">Everyone</button><button role="tab" class="tab ${A.lbTab === "friends" ? "on" : ""}" id="lbFriends">Friends</button></div>` : ""}</div>
+            <ol class="lb">${(A.lbTab === "friends" && st.friendsBoard ? lbRows(st.friendsBoard) : lb) || `<li class="mode-note">${A.lbTab === "friends" && st.friendsBoard ? "None of your friends have played today yet." : "No scores yet."}</li>`}</ol>
+            ${A.user ? "" : `<p class="mode-note"><a href="#login" id="lbLogin">Log in</a> to save your top scores and compare with friends.</p>`}
           </section>
         </aside>
       </div>`;
@@ -433,7 +442,7 @@
   async function dailyStart() {
     D.error = "";
     const el = document.getElementById("dnm");
-    const name = (el ? el.value : savedName).trim() || savedName;
+    const name = A.user ? A.user.displayName : ((el ? el.value : savedName).trim() || savedName);
     if (!name && !D.dstate?.done) { D.error = "Enter a name for the leaderboard first."; render(); return; }
     if (name) { savedName = name; store.set("ph-name", name); }
     D.mode = "daily";
@@ -495,6 +504,229 @@
     }
   }, 250);
   api("status", {}).then(() => { lastDay = D.dstate?.day; render(); });
+
+  /* ================= Optional accounts ================= */
+  // A.user is the signed-in account (or null for guests). view is "login" or "account" when those pages are open.
+  const A = { user: null, discord: false, loaded: false, view: null, tab: "login", error: "", note: "", busy: false, lbTab: "all" };
+  const AUTH_ERRORS = {
+    discord_off: "Discord login isn't set up on this server yet.",
+    discord_cancelled: "Discord login was cancelled.",
+    discord_state: "That Discord login link expired. Try again.",
+    discord_failed: "Discord didn't let us log you in. Try again in a moment.",
+    discord_taken: "That Discord account is already used by another Celestillion account.",
+  };
+  async function authApi(pathName, body = {}) {
+    try {
+      const res = await fetch(pathName, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token, ...body }) });
+      const json = await res.json();
+      if (json.user !== undefined) A.user = json.user;
+      return json;
+    } catch {
+      return { ok: false, error: "Couldn't reach the server. Check your connection and try again." };
+    }
+  }
+  async function loadMe() {
+    try {
+      const r = await (await fetch("/api/me", { cache: "no-store" })).json();
+      A.user = r.user; A.discord = !!r.discord;
+    } catch {}
+    A.loaded = true;
+  }
+  // After logging in or out, reconnect so multiplayer and the daily challenge use the new identity.
+  async function identityChanged() {
+    socket.disconnect(); socket.connect();
+    await api("status", {});
+    render();
+  }
+  function openView(v) {
+    A.view = v; A.error = ""; A.note = "";
+    try { history.replaceState(null, "", v ? "#" + v : location.pathname); } catch {}
+    window.scrollTo(0, 0);
+    render();
+    // Refresh scores and friend requests whenever the account page opens.
+    if (v === "account" && A.user) loadMe().then(render);
+  }
+
+  function viewAccountButton() {
+    if (!A.loaded) return "";
+    return A.user
+      ? `<button class="ghost acct-btn" id="openAccount" aria-label="Your account">${esc(A.user.displayName)}</button>`
+      : `<button class="ghost acct-btn" id="openLogin">Log in</button>`;
+  }
+
+  function viewLogin() {
+    const reg = A.tab === "register";
+    return `<div class="auth-wrap">
+      <div class="daily-bar"><button class="ghost" id="authBack">Back</button></div>
+      <section class="panel auth">
+        <h2>${reg ? "Create an account" : "Log in"}</h2>
+        <p class="mode-note">An account is optional. It saves your top 5 daily scores and lets you add friends. You can keep playing as a guest.</p>
+        <div class="tabs" role="tablist">
+          <button role="tab" class="tab ${reg ? "" : "on"}" id="tabLogin" aria-selected="${!reg}">Log in</button>
+          <button role="tab" class="tab ${reg ? "on" : ""}" id="tabRegister" aria-selected="${reg}">Create account</button>
+        </div>
+        <form id="authForm" class="auth-form" autocomplete="on">
+          <label class="label" for="au">Username</label>
+          <input type="text" id="au" name="username" autocomplete="username" maxlength="20" autocapitalize="none" spellcheck="false" required>
+          <label class="label" for="ap">Password</label>
+          <input type="password" id="ap" name="password" autocomplete="${reg ? "new-password" : "current-password"}" minlength="${reg ? 8 : 1}" maxlength="200" required>
+          ${reg ? `<p class="mode-note">3–20 letters, numbers, dots, dashes or underscores. Passwords need at least 8 characters. No email needed, so keep your password somewhere safe: it can't be reset.</p>` : ""}
+          <button type="submit" ${A.busy ? "disabled" : ""}>${reg ? "Create account" : "Log in"}</button>
+        </form>
+        ${A.discord ? `<div class="or"><span>or</span></div><button class="discord" id="discordLogin">Continue with Discord</button>` : ""}
+        ${A.error ? `<p class="err">${esc(A.error)}</p>` : ""}
+      </section>
+    </div>`;
+  }
+
+  function viewAccount() {
+    const u = A.user;
+    if (!u) return viewLogin();
+    const top = u.topScores.length
+      ? `<ol class="top5">${u.topScores.map((s, i) => `<li><span class="rank">${i + 1}</span><span>Daily #${s.day}</span><span class="score">${s.score}<small> / 500</small></span></li>`).join("")}</ol>`
+      : `<p class="mode-note">Finish a daily challenge to see your best scores here.</p>`;
+    const person = (f, buttons) => `<li><span class="pname">${esc(f.displayName)} <small>@${esc(f.username)}</small></span><span class="row">${buttons}</span></li>`;
+    return `<div class="auth-wrap">
+      <div class="daily-bar"><button class="ghost" id="authBack">Back</button><span class="label">Your account</span><button class="ghost" id="logout">Log out</button></div>
+      ${A.note ? `<p class="flash ok">${esc(A.note)}</p>` : ""}
+      ${A.error ? `<p class="err">${esc(A.error)}</p>` : ""}
+      <div class="acct-grid">
+        <section class="panel">
+          <p class="label">Display name</p>
+          <form id="nameForm" class="row">
+            <input type="text" id="dname" maxlength="18" value="${esc(u.displayName)}" aria-label="Display name" required>
+            <button type="submit">Save</button>
+          </form>
+          <p class="mode-note">This is the name other players see. Your username is <b>@${esc(u.username)}</b>; friends use it to add you.</p>
+        </section>
+
+        <section class="panel">
+          <p class="label">Your top 5 daily scores</p>
+          ${top}
+          <p class="mode-note">${u.gamesPlayed} daily ${u.gamesPlayed === 1 ? "challenge" : "challenges"} played.</p>
+        </section>
+
+        <section class="panel">
+          <p class="label">Friends</p>
+          <form id="friendForm" class="row" autocomplete="off">
+            <input type="text" id="fname" maxlength="20" placeholder="Friend's username" aria-label="Friend's username" autocapitalize="none" spellcheck="false">
+            <button type="submit">Send request</button>
+          </form>
+          ${u.incoming.length ? `<p class="label">Requests for you</p><ul class="people">${u.incoming.map(f => person(f, `<button class="small" data-accept="${f.id}">Accept</button><button class="ghost small" data-drop="${f.id}">Decline</button>`)).join("")}</ul>` : ""}
+          ${u.outgoing.length ? `<p class="label">Waiting for them to accept</p><ul class="people">${u.outgoing.map(f => person(f, `<button class="ghost small" data-drop="${f.id}">Cancel</button>`)).join("")}</ul>` : ""}
+          <p class="label">Your friends (${u.friends.length})</p>
+          ${u.friends.length ? `<ul class="people">${u.friends.map(f => person(f, `<button class="ghost small" data-drop="${f.id}" data-confirm="Remove ${esc(f.displayName)}?">Remove</button>`)).join("")}</ul>`
+            : `<p class="mode-note">No friends yet. Friends show up on a Friends tab of the daily leaderboard.</p>`}
+        </section>
+
+        <section class="panel">
+          <p class="label">Discord</p>
+          ${u.discord ? `<p>Connected as <b>${esc(u.discord.name)}</b>.</p>
+              ${u.hasPassword ? `<div class="row"><button class="ghost" id="discordUnlink">Disconnect Discord</button></div>` : `<p class="mode-note">Set a password below before disconnecting, so you can still log in.</p>`}`
+            : A.discord ? `<p class="mode-note">Connect Discord to log in with it next time.</p><div class="row"><button class="discord" id="discordLink">Connect Discord</button></div>`
+            : `<p class="mode-note">Discord login isn't set up on this server yet.</p>`}
+          <p class="label">${u.hasPassword ? "Change password" : "Set a password"}</p>
+          <form id="pwForm" class="auth-form">
+            <input type="text" name="username" autocomplete="username" value="${esc(u.username)}" hidden>
+            ${u.hasPassword ? `<input type="password" id="pwCur" autocomplete="current-password" placeholder="Current password" aria-label="Current password" required>` : ""}
+            <input type="password" id="pwNew" autocomplete="new-password" minlength="8" placeholder="New password (8+ characters)" aria-label="New password" required>
+            <button type="submit" class="ghost">${u.hasPassword ? "Change password" : "Set password"}</button>
+          </form>
+        </section>
+      </div>
+    </div>`;
+  }
+
+  function wireAuth() {
+    on("openLogin", "click", () => openView("login"));
+    on("openAccount", "click", () => openView("account"));
+    on("authBack", "click", () => openView(null));
+    on("tabLogin", "click", () => { A.tab = "login"; A.error = ""; render(); });
+    on("tabRegister", "click", () => { A.tab = "register"; A.error = ""; render(); });
+    on("authForm", "submit", async e => {
+      e.preventDefault();
+      if (A.busy) return;
+      // Read the fields before redrawing, which clears the password box.
+      const creds = { username: document.getElementById("au").value, password: document.getElementById("ap").value };
+      A.busy = true; A.error = ""; render();
+      const r = await authApi(A.tab === "register" ? "/api/auth/register" : "/api/auth/login", creds);
+      A.busy = false;
+      if (!r.ok) { A.error = r.error; render(); return; }
+      savedName = A.user.displayName;
+      A.view = "account"; A.note = A.tab === "register" ? "Account created. You're logged in." : "";
+      try { history.replaceState(null, "", "#account"); } catch {}
+      await identityChanged();
+    });
+    const toDiscord = link => {
+      // Pass this browser's guest id along so today's daily run moves to the account.
+      document.cookie = `cel_guest=${encodeURIComponent(token)}; Path=/; Max-Age=600; SameSite=Lax`;
+      location.href = "/auth/discord" + (link ? "?link=1" : "");
+    };
+    on("discordLogin", "click", () => toDiscord(false));
+    on("discordLink", "click", () => toDiscord(true));
+    on("logout", "click", async () => {
+      await authApi("/api/auth/logout");
+      A.user = null;
+      openView(null);
+      await identityChanged();
+    });
+    const accountAction = async (pathName, body, note) => {
+      A.error = ""; A.note = "";
+      const r = await authApi(pathName, body);
+      if (!r.ok) A.error = r.error; else A.note = note;
+      render();
+      return r;
+    };
+    on("nameForm", "submit", async e => {
+      e.preventDefault();
+      const r = await accountAction("/api/account/name", { displayName: document.getElementById("dname").value }, "Display name saved.");
+      if (r.ok) { savedName = A.user.displayName; api("status", {}).then(render); }
+    });
+    on("friendForm", "submit", async e => {
+      e.preventDefault();
+      const name = document.getElementById("fname").value.trim();
+      if (!name) return;
+      const r = await accountAction("/api/friends/request", { username: name }, "");
+      if (r.ok) {
+        const nowFriend = A.user.friends.some(f => f.username === name.toLowerCase());
+        A.note = nowFriend ? "You're now friends." : "Friend request sent.";
+        render();
+      }
+    });
+    document.querySelectorAll("[data-accept]").forEach(b => b.addEventListener("click", () =>
+      accountAction("/api/friends/accept", { id: b.dataset.accept }, "Friend added.")));
+    document.querySelectorAll("[data-drop]").forEach(b => b.addEventListener("click", () => {
+      // The viewer can't show confirm(), so removing a friend takes a second click.
+      if (b.dataset.confirm && b.dataset.armed !== "1") { b.dataset.armed = "1"; b.textContent = "Click again to remove"; return; }
+      accountAction("/api/friends/remove", { id: b.dataset.drop }, "");
+    }));
+    on("discordUnlink", "click", () => accountAction("/api/account/discord/unlink", {}, "Discord disconnected."));
+    on("pwForm", "submit", async e => {
+      e.preventDefault();
+      const body = { current: document.getElementById("pwCur")?.value, next: document.getElementById("pwNew").value };
+      await accountAction("/api/account/password", body, "Password saved.");
+    });
+    on("lbLogin", "click", e => { e.preventDefault(); D.mode = null; openView("login"); });
+    on("lbAll", "click", () => { A.lbTab = "all"; render(); });
+    on("lbFriends", "click", () => { A.lbTab = "friends"; render(); });
+  }
+
+  // Start-up: read ?auth_error= from a Discord redirect and open #login / #account pages.
+  (() => {
+    const params = new URLSearchParams(location.search);
+    const err = params.get("auth_error");
+    const h = location.hash.slice(1);
+    if (h === "login" || h === "account") A.view = h;
+    if (err) {
+      A.error = AUTH_ERRORS[err] || "Login failed. Try again.";
+      try { history.replaceState(null, "", location.pathname + location.hash); } catch {}
+    }
+  })();
+  window.addEventListener("hashchange", () => {
+    const h = location.hash.slice(1);
+    if ((h === "login" || h === "account") && A.view !== h) { A.view = h; render(); }
+  });
+  loadMe().then(async () => { if (A.user) savedName = A.user.displayName; render(); });
 
   render();
 })();

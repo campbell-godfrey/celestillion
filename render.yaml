@@ -9,7 +9,15 @@ services:
     envVars:
       - key: DATA_DIR
         value: /var/data
-    # Keeps daily results and leaderboards when the server restarts or redeploys.
+      # Your site's address, used for the Discord login redirect. Example: https://celestillion.com
+      - key: PUBLIC_URL
+        sync: false
+      # From the Discord Developer Portal (OAuth2 page). Leave empty to hide "Continue with Discord".
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_CLIENT_SECRET
+        sync: false
+    # Keeps accounts, daily results and leaderboards when the server restarts or redeploys.
     disk:
       name: celestillion-data
       mountPath: /var/data

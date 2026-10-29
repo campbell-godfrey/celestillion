@@ -7,6 +7,7 @@ const express = require("express");
 const { Server } = require("socket.io");
 const G = require("./game");
 const { createDaily, loadQuestions, questionsFor } = require("./daily");
+const { createAccounts, parseCookies, rateLimiter, SESSION_MS } = require("./accounts");
 
 const PORT = process.env.PORT || 3000;
 const QUESTIONS = loadQuestions();
@@ -15,6 +16,7 @@ const GAME_DROP_MS = 45_000;      // knock a disconnected player out of a runnin
 const ROOM_IDLE_MS = 10 * 60_000; // delete a room nobody is connected to after this
 
 const app = express();
+app.set("trust proxy", 1); // Render puts the app behind a proxy; this makes req.secure and req.ip correct
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json({ limit: "4kb" }));
 app.get("/healthz", (_req, res) => res.send("ok"));
@@ -35,29 +37,205 @@ function newCode() {
 const publicId = token => crypto.createHash("sha256").update(String(token)).digest("hex").slice(0, 10);
 const cleanName = n => String(n ?? "").replace(/\s+/g, " ").trim().slice(0, 18);
 
-/* ---------------- Daily challenge (single player) ---------------- */
-const daily = createDaily();
-function dailyPlayer(req, res) {
-  const token = req.body?.token;
-  if (typeof token !== "string" || token.length < 16 || token.length > 100) {
-    res.status(400).json({ ok: false, error: "Bad player token. Refresh the page and try again." });
-    return null;
+/* ---------------- Optional accounts ---------------- */
+const accounts = createAccounts();
+const SESSION_COOKIE = "cel_session";
+const userPid = u => "u_" + u.id;
+
+function sessionToken(req) { return parseCookies(req.headers.cookie)[SESSION_COOKIE] || null; }
+function currentUser(req) { return accounts.userForSession(sessionToken(req)); }
+function setSessionCookie(req, res, token) {
+  const secure = req.secure ? "; Secure" : "";
+  const age = token ? Math.floor(SESSION_MS / 1000) : 0;
+  res.setHeader("Set-Cookie", `${SESSION_COOKIE}=${token || ""}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${age}${secure}`);
+}
+function guestPid(token) {
+  return typeof token === "string" && token.length >= 16 && token.length <= 100 ? publicId(token) : null;
+}
+// Logged-in players are known by their account; guests by the random token their browser keeps.
+function playerFor(req) {
+  const user = currentUser(req);
+  if (user) return { pid: userPid(user), user };
+  const pid = guestPid(req.body?.token);
+  return pid ? { pid, user: null } : null;
+}
+const friendPids = user => (user ? accounts.friendIds(user.id).map(id => "u_" + id) : null);
+function signIn(req, res, user, guestToken) {
+  setSessionCookie(req, res, accounts.createSession(user.id));
+  const g = guestPid(guestToken);
+  if (g) { daily.adopt(g, userPid(user)); daily.rename(userPid(user), user.displayName); } // keep today's guest run, under the account's name
+}
+/** Renames this player everywhere their name is currently shown. */
+function renameEverywhere(user) {
+  const pid = userPid(user);
+  daily.rename(pid, user.displayName);
+  for (const room of rooms.values()) {
+    const p = room.players.get(pid);
+    if (p) { p.name = user.displayName; broadcast(room); }
   }
-  return publicId(token);
+}
+
+// Refuse cross-site form posts: every state-changing request must come from this site, as JSON.
+app.use("/api", (req, res, next) => {
+  if (req.method !== "POST") return next();
+  const origin = req.headers.origin;
+  if (origin) {
+    try { if (new URL(origin).host !== req.headers.host) return res.status(403).json({ ok: false, error: "Requests must come from this site." }); }
+    catch { return res.status(403).json({ ok: false, error: "Requests must come from this site." }); }
+  }
+  if (!req.is("application/json")) return res.status(415).json({ ok: false, error: "Send JSON." });
+  next();
+});
+const loginLimit = rateLimiter(10, 15 * 60_000);
+const ipLimit = rateLimiter(60, 15 * 60_000);
+const registerLimit = rateLimiter(10, 60 * 60_000);
+const fail = (res, e, code = 400) => res.status(code).json({ ok: false, error: e.message || String(e) });
+const needUser = (req, res) => { const u = currentUser(req); if (!u) fail(res, new Error("Log in first."), 401); return u; };
+const me = u => ({ ok: true, user: accounts.publicUser(u) });
+
+app.get("/api/me", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.json({ ok: true, user: accounts.publicUser(currentUser(req)), discord: discordEnabled() });
+});
+app.post("/api/auth/register", (req, res) => {
+  if (!registerLimit(req.ip)) return fail(res, new Error("Too many new accounts from here. Try again later."), 429);
+  try {
+    const u = accounts.register(req.body.username, req.body.password);
+    signIn(req, res, u, req.body.token);
+    res.json(me(u));
+  } catch (e) { fail(res, e); }
+});
+app.post("/api/auth/login", (req, res) => {
+  const key = req.ip + "|" + String(req.body.username ?? "").toLowerCase();
+  if (!ipLimit(req.ip) || !loginLimit(key)) return fail(res, new Error("Too many attempts. Wait a few minutes and try again."), 429);
+  try {
+    const u = accounts.login(req.body.username, req.body.password);
+    signIn(req, res, u, req.body.token);
+    res.json(me(u));
+  } catch (e) { fail(res, e, 401); }
+});
+app.post("/api/auth/logout", (req, res) => {
+  accounts.endSession(sessionToken(req));
+  setSessionCookie(req, res, null);
+  res.json({ ok: true });
+});
+app.post("/api/account/name", (req, res) => {
+  const u = needUser(req, res); if (!u) return;
+  try { accounts.setDisplayName(u.id, req.body.displayName); renameEverywhere(u); res.json(me(u)); } catch (e) { fail(res, e); }
+});
+app.post("/api/account/password", (req, res) => {
+  const u = needUser(req, res); if (!u) return;
+  if (!loginLimit(req.ip + "|pw|" + u.id)) return fail(res, new Error("Too many attempts. Wait a few minutes and try again."), 429);
+  try { accounts.setPassword(u.id, req.body.current, req.body.next); res.json(me(u)); } catch (e) { fail(res, e); }
+});
+app.post("/api/account/discord/unlink", (req, res) => {
+  const u = needUser(req, res); if (!u) return;
+  try { accounts.unlinkDiscord(u.id); res.json(me(u)); } catch (e) { fail(res, e); }
+});
+app.post("/api/friends/request", (req, res) => {
+  const u = needUser(req, res); if (!u) return;
+  try { accounts.requestFriend(u.id, req.body.username); res.json(me(u)); } catch (e) { fail(res, e); }
+});
+app.post("/api/friends/accept", (req, res) => {
+  const u = needUser(req, res); if (!u) return;
+  try { accounts.acceptFriend(u.id, String(req.body.id ?? "")); res.json(me(u)); } catch (e) { fail(res, e); }
+});
+app.post("/api/friends/remove", (req, res) => {
+  const u = needUser(req, res); if (!u) return;
+  try { accounts.dropFriend(u.id, String(req.body.id ?? "")); res.json(me(u)); } catch (e) { fail(res, e); }
+});
+
+/* ---------- Log in with Discord (OAuth2 authorization code flow) ---------- */
+const DISCORD = {
+  clientId: process.env.DISCORD_CLIENT_ID,
+  secret: process.env.DISCORD_CLIENT_SECRET,
+  authorizeUrl: process.env.DISCORD_AUTHORIZE_URL || "https://discord.com/oauth2/authorize",
+  api: process.env.DISCORD_API_BASE || "https://discord.com/api/v10",
+  tokenUrl: process.env.DISCORD_TOKEN_URL || "https://discord.com/api/oauth2/token",
+  issuer: process.env.DISCORD_ISSUER || "https://discord.com",
+};
+function discordEnabled() { return !!(DISCORD.clientId && DISCORD.secret); }
+function siteUrl(req) { return (process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`).replace(/\/$/, ""); }
+const redirectUri = req => siteUrl(req) + "/auth/discord/callback";
+const STATE_COOKIE = "cel_oauth";
+
+app.get("/auth/discord", (req, res) => {
+  if (!discordEnabled()) return res.redirect("/?auth_error=discord_off#login");
+  const state = crypto.randomBytes(16).toString("hex");
+  const link = req.query.link === "1" && currentUser(req) ? "link" : "login";
+  const secure = req.secure ? "; Secure" : "";
+  // The state ties Discord's reply to this browser. SameSite=Lax lets it come back on Discord's redirect.
+  res.setHeader("Set-Cookie", `${STATE_COOKIE}=${state}.${link}; Path=/auth/discord; HttpOnly; SameSite=Lax; Max-Age=600${secure}`);
+  const q = new URLSearchParams({ response_type: "code", client_id: DISCORD.clientId, scope: "identify",
+                                  redirect_uri: redirectUri(req), state, prompt: "none" });
+  res.redirect(`${DISCORD.authorizeUrl}?${q}`);
+});
+
+app.get("/auth/discord/callback", async (req, res) => {
+  const cookies = parseCookies(req.headers.cookie);
+  const [state, mode] = String(cookies[STATE_COOKIE] || "").split(".");
+  const secure = req.secure ? "; Secure" : "";
+  const clearState = `${STATE_COOKIE}=; Path=/auth/discord; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
+  const back = (err, hash = "login") => { res.setHeader("Set-Cookie", clearState); res.redirect(err ? `/?auth_error=${err}#${hash}` : `/#${hash}`); };
+  if (req.query.error) return back("discord_cancelled");
+  if (!state || req.query.state !== state) return back("discord_state");
+  if (req.query.iss && req.query.iss !== DISCORD.issuer) return back("discord_state");
+  try {
+    const tokenRes = await fetch(DISCORD.tokenUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ client_id: DISCORD.clientId, client_secret: DISCORD.secret, grant_type: "authorization_code",
+                                  code: String(req.query.code || ""), redirect_uri: redirectUri(req) }),
+    });
+    if (!tokenRes.ok) return back("discord_failed");
+    const { access_token } = await tokenRes.json();
+    const meRes = await fetch(`${DISCORD.api}/users/@me`, { headers: { Authorization: `Bearer ${access_token}` } });
+    if (!meRes.ok) return back("discord_failed");
+    const duser = await meRes.json();
+    if (!duser?.id) return back("discord_failed");
+
+    if (mode === "link") {
+      const u = currentUser(req);
+      if (!u) return back("discord_failed");
+      try { accounts.discordLogin(duser, u.id); } catch { return back("discord_taken", "account"); }
+      return back(null, "account");
+    }
+    const u = accounts.discordLogin(duser);
+    const token = accounts.createSession(u.id);
+    const guest = guestPid(cookies.cel_guest);
+    if (guest) { daily.adopt(guest, userPid(u)); daily.rename(userPid(u), u.displayName); }
+    res.setHeader("Set-Cookie", [clearState,
+      `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(SESSION_MS / 1000)}${secure}`,
+      `cel_guest=; Path=/; Max-Age=0`]);
+    res.redirect("/#account");
+  } catch (e) {
+    console.error("Discord login failed:", e.message);
+    back("discord_failed");
+  }
+});
+
+/* ---------------- Daily challenge (single player) ---------------- */
+// Scores are saved to the player's account history when they're logged in.
+const daily = createDaily({ onFinish: (pid, day, total) => { if (pid.startsWith("u_")) accounts.recordScore(pid.slice(2), day, total); } });
+function dailyPlayer(req, res) {
+  const p = playerFor(req);
+  if (!p) res.status(400).json({ ok: false, error: "Bad player token. Refresh the page and try again." });
+  return p;
 }
 app.post("/api/daily/status", (req, res) => {
-  const pid = dailyPlayer(req, res); if (!pid) return;
-  res.json({ ok: true, state: daily.status(pid) });
+  const p = dailyPlayer(req, res); if (!p) return;
+  res.json({ ok: true, state: daily.status(p.pid, friendPids(p.user)) });
 });
 app.post("/api/daily/next", (req, res) => {
-  const pid = dailyPlayer(req, res); if (!pid) return;
-  const name = cleanName(req.body.name);
+  const p = dailyPlayer(req, res); if (!p) return;
+  const name = p.user ? p.user.displayName : cleanName(req.body.name);
   if (!name) return res.status(400).json({ ok: false, error: "Enter your name first." });
-  res.json({ ok: true, state: daily.next(pid, name) });
+  res.json({ ok: true, state: daily.next(p.pid, name, friendPids(p.user)) });
 });
 app.post("/api/daily/answer", (req, res) => {
-  const pid = dailyPlayer(req, res); if (!pid) return;
-  const state = daily.answer(pid, req.body.text, cleanName(req.body.name));
+  const p = dailyPlayer(req, res); if (!p) return;
+  const name = p.user ? p.user.displayName : cleanName(req.body.name);
+  const state = daily.answer(p.pid, req.body.text, name, friendPids(p.user));
   res.json({ ok: !state.error, error: state.error, state });
 });
 
@@ -176,13 +354,22 @@ function leaveCurrent(socket) {
 }
 
 io.on("connection", socket => {
-  socket.data = { pid: null, code: null };
+  socket.data = { pid: null, code: null, userId: null };
 
+  // Logged-in players are identified by their session cookie (sent with the connection); guests by their token.
   socket.on("hello", ({ token } = {}, ack) => {
+    const user = accounts.userForSession(parseCookies(socket.request.headers.cookie)[SESSION_COOKIE]);
+    if (user) {
+      socket.data.pid = userPid(user);
+      socket.data.userId = user.id;
+      return ack?.({ ok: true, you: socket.data.pid, displayName: user.displayName });
+    }
     if (typeof token !== "string" || token.length < 16 || token.length > 100) return ack?.({ ok: false, error: "Bad player token." });
     socket.data.pid = publicId(token);
     ack?.({ ok: true, you: socket.data.pid });
   });
+  // Account players always appear under their display name.
+  const nameFor = typed => (socket.data.userId ? accounts.get(socket.data.userId)?.displayName : null) || cleanName(typed);
 
   function enter(room, name) {
     const pid = socket.data.pid;
@@ -204,7 +391,7 @@ io.on("connection", socket => {
   }
 
   socket.on("create", ({ name } = {}, ack) => {
-    name = cleanName(name);
+    name = nameFor(name);
     if (!socket.data.pid) return ack?.({ ok: false, error: "Not connected yet. Try again in a moment." });
     if (!name) return ack?.({ ok: false, error: "Enter your name first." });
     leaveCurrent(socket);
@@ -215,7 +402,7 @@ io.on("connection", socket => {
   });
 
   socket.on("join", ({ code, name } = {}, ack) => {
-    name = cleanName(name);
+    name = nameFor(name);
     code = String(code ?? "").toUpperCase().trim();
     const room = rooms.get(code);
     if (!socket.data.pid) return ack?.({ ok: false, error: "Not connected yet. Try again in a moment." });
@@ -290,7 +477,8 @@ io.on("connection", socket => {
 });
 
 // Save daily results before Render (or anything else) stops the server.
-for (const sig of ["SIGTERM", "SIGINT"]) process.on(sig, () => { daily.flush(); process.exit(0); });
+for (const sig of ["SIGTERM", "SIGINT"]) process.on(sig, () => { daily.flush(); accounts.flush(); process.exit(0); });
+setInterval(() => accounts.pruneSessions(), 6 * 3600_000).unref();
 
 server.listen(PORT, () => console.log(`Celestillion running on http://localhost:${PORT} with ${QUESTIONS.length} questions`));
 module.exports = { server, rooms, daily };

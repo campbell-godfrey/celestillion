@@ -133,7 +133,7 @@ function createStore(dir = process.env.DATA_DIR || path.join(__dirname, "data"))
   return { data, save, prune, flush };
 }
 
-function createDaily({ questions = loadQuestions(), store = createStore(), now = () => Date.now() } = {}) {
+function createDaily({ questions = loadQuestions(), store = createStore(), now = () => Date.now(), onFinish = null } = {}) {
   function runFor(pid) {
     const day = dayNumber(now());
     store.prune(day);
@@ -158,19 +158,22 @@ function createDaily({ questions = loadQuestions(), store = createStore(), now =
       const board = (store.data.boards[day] ||= {});
       const total = run.results.reduce((s, r) => s + r.points, 0);
       board[run.pid] = { name: run.name || "Player", score: total, at: t, tiers: run.results.map(r => r.tier) };
+      onFinish?.(run.pid, day, total);
     }
   }
 
-  function leaderboard(day = dayNumber(now()), limit = 20) {
+  /** Today's scores, best first. Pass `only` (a set of player ids) for a friends-only board. */
+  function leaderboard(day = dayNumber(now()), limit = 20, only = null) {
     const board = store.data.boards[day] || {};
     return Object.entries(board)
+      .filter(([pid]) => !only || only.has(pid))
       .map(([pid, e]) => ({ pid, ...e }))
       .sort((a, b) => b.score - a.score || a.at - b.at)
       .slice(0, limit)
       .map((e, i) => ({ rank: i + 1, id: e.pid, name: e.name, score: e.score }));
   }
 
-  function publicState(pid, run, t) {
+  function publicState(pid, run, t, friends = null) {
     const today = questionsFor(questions, t);
     const done = run.results.length >= PER_DAY;
     const state = {
@@ -186,6 +189,7 @@ function createDaily({ questions = loadQuestions(), store = createStore(), now =
       leaderboard: leaderboard(dayNumber(t)),
       you: pid,
     };
+    if (friends) state.friendsBoard = leaderboard(dayNumber(t), 50, new Set([...friends, pid]));
     if (run.current) {
       state.current = { index: run.current.index, question: today[run.current.index].text, deadline: run.current.deadline };
     }
@@ -198,14 +202,14 @@ function createDaily({ questions = loadQuestions(), store = createStore(), now =
   }
 
   return {
-    status(pid) {
+    status(pid, friends = null) {
       const t = now(), run = runFor(pid);
       run.pid = pid;
       expire(run, t);
-      return publicState(pid, run, t);
+      return publicState(pid, run, t, friends);
     },
     /** Shows the next question and starts its clock. Calling again before answering returns the same question. */
-    next(pid, name) {
+    next(pid, name, friends = null) {
       const t = now(), run = runFor(pid);
       run.pid = pid;
       if (name) run.name = name;
@@ -214,15 +218,15 @@ function createDaily({ questions = loadQuestions(), store = createStore(), now =
         run.current = { index: run.results.length, deadline: t + ANSWER_MS };
         store.save();
       }
-      return publicState(pid, run, t);
+      return publicState(pid, run, t, friends);
     },
-    answer(pid, text, name) {
+    answer(pid, text, name, friends = null) {
       const t = now(), run = runFor(pid);
       run.pid = pid;
       if (name) run.name = name;
       expire(run, t);
       if (!run.current) {
-        const s = publicState(pid, run, t);
+        const s = publicState(pid, run, t, friends);
         const last = run.results[run.results.length - 1];
         return { ...s, last, error: last?.timedOut ? "Time ran out on that question, so it scored 0." : "There's no question waiting for an answer." };
       }
@@ -237,7 +241,30 @@ function createDaily({ questions = loadQuestions(), store = createStore(), now =
       run.current = null;
       finishIfDone(run, t);
       store.save();
-      return { ...publicState(pid, run, t), last: result };
+      return { ...publicState(pid, run, t, friends), last: result };
+    },
+    /** When a guest logs in, today's guest run moves to their account (unless the account already played). */
+    adopt(fromPid, toPid) {
+      const day = dayNumber(now());
+      const runs = store.data.runs[day];
+      if (!runs || !runs[fromPid] || fromPid === toPid) return;
+      const mine = runs[toPid];
+      if (!mine || (!mine.results.length && !mine.current)) {
+        runs[toPid] = { ...runs[fromPid], pid: toPid };
+        delete runs[fromPid];
+        const board = store.data.boards[day];
+        if (board?.[fromPid]) { board[toPid] = board[fromPid]; delete board[fromPid]; onFinish?.(toPid, day, board[toPid].score); }
+        store.save();
+      }
+    },
+    /** Updates the name shown on today's leaderboard after a display name change. */
+    rename(pid, name) {
+      const day = dayNumber(now());
+      const run = store.data.runs[day]?.[pid];
+      if (run) run.name = name;
+      const entry = store.data.boards[day]?.[pid];
+      if (entry) entry.name = name;
+      store.save();
     },
     leaderboard,
     flush: () => store.flush(),
