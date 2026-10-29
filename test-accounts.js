@@ -201,6 +201,40 @@ async function playDaily(b, tier = "celestillion", token = GUEST) {
   r = await (await carol.get("/api/me")).json();
   assert.strictEqual(r.user.friends.length, 0, "removing a friend removes it for both");
 
+  // ---- Profiles ----
+  const aliceMe = (await (await alice.get("/api/me")).json()).user;
+  const bobMe = (await (await bob.get("/api/me")).json()).user;
+  const carolMe = (await (await carol.get("/api/me")).json()).user;
+  r = await bob.post("/api/profile", { id: aliceMe.id });
+  assert.strictEqual(r.json.profile.relation, "friend");
+  assert.strictEqual(r.json.profile.visible, true, "friends see the full profile");
+  assert.deepStrictEqual(r.json.profile.topScores.map(x => x.score), [425], "friend sees top 5 scores");
+  assert.ok(r.json.profile.friends.some(f => f.username === "bob"), "friend sees the friends list");
+  r = await bob.post("/api/profile", { id: "u_" + aliceMe.id });
+  assert.ok(r.json.ok, "ids with the u_ prefix work too");
+  r = await carol.post("/api/profile", { id: aliceMe.id });
+  assert.strictEqual(r.json.profile.relation, "none");
+  assert.strictEqual(r.json.profile.visible, false);
+  assert.strictEqual(r.json.profile.topScores, undefined, "non-friends don't get scores");
+  assert.strictEqual(r.json.profile.friends, undefined, "non-friends don't get the friends list");
+  assert.strictEqual(r.json.profile.displayName, "Alice", "but do see the name");
+  r = await guest.post("/api/profile", { id: aliceMe.id });
+  assert.strictEqual(r.json.profile.relation, "guest");
+  assert.strictEqual(r.json.profile.friends, undefined, "guests don't get the friends list");
+  r = await alice.post("/api/profile", { id: aliceMe.id });
+  assert.strictEqual(r.json.profile.relation, "self");
+  await carol.post("/api/friends/request", { username: "alice" });
+  r = await carol.post("/api/profile", { id: aliceMe.id });
+  assert.strictEqual(r.json.profile.relation, "outgoing", "pending request shows on the profile");
+  r = await alice.post("/api/profile", { id: carolMe.id });
+  assert.strictEqual(r.json.profile.relation, "incoming");
+  await alice.post("/api/friends/remove", { id: carolMe.id });
+  r = await guest.post("/api/profile", { id: "000000000000" });
+  assert.strictEqual(r.status, 404, "unknown players");
+  r = await guest.post("/api/profile", { id: "../../etc" });
+  assert.strictEqual(r.status, 404, "junk ids are refused");
+  assert.ok(!JSON.stringify((await bob.post("/api/profile", { id: aliceMe.id })).json).match(/scrypt|passwordHash|discordId|incoming|outgoing/), "profiles never include private fields");
+
   // ---- Discord: new account ----
   const dee = browser();
   let res = await dee.get("/auth/discord");

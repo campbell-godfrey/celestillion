@@ -132,6 +132,13 @@ app.post("/api/account/discord/unlink", (req, res) => {
   const u = needUser(req, res); if (!u) return;
   try { accounts.unlinkDiscord(u.id); res.json(me(u)); } catch (e) { fail(res, e); }
 });
+app.post("/api/profile", (req, res) => {
+  const viewer = currentUser(req);
+  const id = String(req.body.id ?? "").replace(/^u_/, "");
+  const profile = /^[0-9a-f]{12}$/.test(id) ? accounts.profileFor(id, viewer?.id ?? null) : null;
+  if (!profile) return fail(res, new Error("That player doesn't exist or has deleted their account."), 404);
+  res.json({ ok: true, profile });
+});
 app.post("/api/friends/request", (req, res) => {
   const u = needUser(req, res); if (!u) return;
   try { accounts.requestFriend(u.id, req.body.username); res.json(me(u)); } catch (e) { fail(res, e); }

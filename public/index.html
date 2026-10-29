@@ -127,6 +127,47 @@ input[type=text], input[type=password] { width: 100%; padding: 10px 12px; border
 .dres-answer { padding: 18px 26px; border-radius: 14px; font-size: 22px; min-width: min(280px, 100%); }
 .said.has-img, .said-list .chip.has-img { border-radius: 10px; padding: 7px 12px; }
 
+/* ---------- Player name links: look like plain names, turn into a link on hover ---------- */
+:root { --link-hover: #1e3a8a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --link-hover: #8ab4ff; } }
+:root[data-theme="dark"] { --link-hover: #8ab4ff; }
+a.plink { color: inherit; text-decoration: none; cursor: pointer; border-radius: 3px; }
+a.plink:hover, a.plink:focus-visible { color: var(--link-hover); text-decoration: underline; text-underline-offset: 2px; }
+a.plink:focus-visible { outline: 2px solid var(--link-hover); outline-offset: 2px; }
+.has-img a.plink:hover, .has-img a.plink:focus-visible { color: #cfe0ff; }
+.profile-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.profile-name { font-size: clamp(24px, 4vw, 32px); overflow-wrap: anywhere; }
+.profile-head .flash, .profile-head .err { flex-basis: 100%; margin: 0; }
+
+/* ---------- Sound toggle ---------- */
+.icon-btn { padding: 8px 10px; display: inline-flex; align-items: center; justify-content: center; }
+#acct { display: flex; gap: 8px; align-items: center; }
+
+/* ---------- "Your turn" pop-up ---------- */
+.turn-alert { position: fixed; z-index: 50; left: 50%; transform: translateX(-50%);
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px)); width: min(440px, calc(100% - 32px));
+  display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 10px 14px;
+  padding: 14px 16px 12px; border-radius: 14px; background: var(--board); color: #fff;
+  box-shadow: 0 12px 30px rgba(0,0,0,.3); border: 2px solid var(--accent); animation: ta-in .3s ease-out; }
+.turn-alert .ta-text { font-size: 17px; }
+.turn-alert #taSecs { font-variant-numeric: tabular-nums; color: var(--accent); }
+.turn-alert.low { border-color: var(--bad); animation: ta-in .3s ease-out, ta-pulse 1s ease-in-out infinite; }
+.turn-alert.low #taSecs { color: #ff9a92; }
+.ta-timer { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(255,255,255,.18); overflow: hidden; }
+.ta-timer i { display: block; height: 100%; background: var(--accent); transition: width .25s linear; }
+.turn-alert.low .ta-timer i { background: var(--bad); }
+@keyframes ta-in { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translateX(-50%); opacity: 1; } }
+@keyframes ta-pulse { 50% { box-shadow: 0 12px 30px rgba(0,0,0,.3), 0 0 0 6px color-mix(in srgb, var(--bad) 35%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .turn-alert, .turn-alert.low { animation: none; } }
+
+/* ---------- Daily points count-up ---------- */
+.dres-pts { font-variant-numeric: tabular-nums; }
+.dres.counting .dres-tier, .dres.counting .dres-answer { opacity: 0; transform: scale(.85); }
+.dres .dres-tier, .dres .dres-answer { transition: opacity .3s ease-out, transform .35s cubic-bezier(.2,1.6,.4,1); }
+.dres.revealed .dres-pts { animation: pts-land .45s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pts-land { 40% { transform: scale(1.12); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .dres.revealed .dres-pts { animation: none; } .dres .dres-tier, .dres .dres-answer { transition: none; } }
+
 /* ---------- Accounts ---------- */
 :root { --discord: #5865f2; --discord-fg: #ffffff; }
 .head-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
@@ -234,6 +275,12 @@ body { margin: 0; }
   </header>
   <main id="app"></main>
 </div>
+<div id="turnAlert" class="turn-alert" role="alert" hidden>
+  <div class="ta-text"><b>Your turn!</b> <span id="taSecs">20s</span> left</div>
+  <button id="taBack">Back to game</button>
+  <div class="ta-timer"><i id="taBar"></i></div>
+</div>
+<script src="/sound.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/client.js"></script>
 </body>

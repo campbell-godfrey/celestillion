@@ -71,6 +71,30 @@ function createAccounts(dir = process.env.DATA_DIR || path.join(__dirname, "data
     };
   }
 
+  /**
+   * Another player's profile, as seen by `viewerId` (null for guests).
+   * Everyone sees the name; top scores and the friends list are shown to that player's friends and to themselves.
+   */
+  function profileFor(targetId, viewerId) {
+    const u = data.users[targetId];
+    if (!u) return null;
+    const viewer = viewerId ? data.users[viewerId] : null;
+    const relation = !viewer ? "guest"
+      : viewer.id === u.id ? "self"
+      : viewer.friends.includes(u.id) ? "friend"
+      : viewer.incoming.includes(u.id) ? "incoming"
+      : viewer.outgoing.includes(u.id) ? "outgoing"
+      : "none";
+    const out = { id: u.id, username: u.username, displayName: u.displayName, relation, visible: relation === "self" || relation === "friend" };
+    if (out.visible) {
+      const full = publicUser(u);
+      out.topScores = full.topScores;
+      out.gamesPlayed = full.gamesPlayed;
+      out.friends = full.friends.sort((a, b) => a.displayName.localeCompare(b.displayName));
+    }
+    return out;
+  }
+
   function validUsername(name) {
     const lower = String(name ?? "").trim().toLowerCase();
     if (!USERNAME_RE.test(lower)) throw new Error("Usernames are 3–20 characters: letters, numbers, dots, dashes or underscores.");
@@ -78,7 +102,7 @@ function createAccounts(dir = process.env.DATA_DIR || path.join(__dirname, "data
   }
 
   return {
-    flush, publicUser,
+    flush, publicUser, profileFor,
     get: id => data.users[id] || null,
 
     register(username, password) {

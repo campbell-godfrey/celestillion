@@ -43,8 +43,29 @@
   socket.on("disconnect", () => { S.connected = false; render(); });
 
   socket.on("state", applyState);
+  /** Plays sounds for what changed between two multiplayer states. */
+  function gameSounds(prev, next, prevStatus, nextStatus) {
+    if (!next || !window.Sfx) return;
+    const me = S.you, myTurn = g => g.phase === "turn" && g.order[g.turn] === me;
+    if (!prev) { if (myTurn(next)) Sfx.play("yourTurn"); return; }
+    for (const id of next.order) {
+      if ((next.hearts[id] ?? 0) < (prev.hearts[id] ?? 0)) Sfx.play(id === me ? "heartLost" : "otherHeartLost");
+    }
+    const ps = prev.round?.said?.length ?? 0, ns = next.round?.said?.length ?? 0;
+    if (next.roundNo === prev.roundNo && ns > ps) Sfx.play(next.round.said[ns - 1].pid === me ? "correct" : "otherCorrect");
+    if (prevStatus === "playing" && nextStatus === "over") {
+      const inGame = next.order.includes(me);
+      setTimeout(() => Sfx.play(!inGame ? "roundEnd" : next.winner === me ? "win" : "lose"), 400);
+      return;
+    }
+    if (prev.phase === "turn" && next.phase === "between") setTimeout(() => Sfx.play("roundEnd"), 300);
+    if (next.phase === "turn" && (prev.phase !== "turn" || next.roundNo !== prev.roundNo)) Sfx.play("newRound");
+    if (myTurn(next) && (prev.turnNo !== next.turnNo || prev.phase !== "turn")) setTimeout(() => Sfx.play("yourTurn"), 250);
+  }
+
   function applyState(room) {
     if (!room || !S.code || room.code !== S.code) return;
+    gameSounds(S.room?.game, room.game, S.room?.status, room.status);
     S.offset = room.serverNow - Date.now();
     if (room.status === "playing" && S.room?.status !== "playing") { S.flash = null; }
     if (room.game && S.room?.game && room.game.turnNo !== S.room.game.turnNo) S.justSubmitted = true; // clear the box for the next turn
@@ -99,6 +120,7 @@
     if (!r.ok) { S.error = r.error; render(); return; }
     const res = r.result;
     if (!res.ok) {
+      window.Sfx?.play("wrong");
       // Wrong or repeated: the turn and the clock carry on, so show it until the turn changes.
       const msg = res.why === "already said"
         ? `“${res.answer}” was already said${res.by ? " by " + nameOf(res.by) : ""}. Try another.`
@@ -118,7 +140,42 @@
     const bar = document.getElementById("timerBar"), secs = document.getElementById("secs");
     if (bar) { bar.style.width = (left / TURN_MS * 100) + "%"; bar.parentElement.classList.toggle("low", left < 8000); }
     if (secs) secs.textContent = Math.ceil(left / 1000) + "s";
+    // Soft ticks in the last 5 seconds of your own turn, wherever you are on the site.
+    if (g.phase === "turn" && g.order[g.turn] === S.you && left > 0 && left <= 5000) {
+      const sec = `${g.turnNo}:${Math.ceil(left / 1000)}`;
+      if (sec !== S.lastTick) { S.lastTick = sec; window.Sfx?.play("lastSeconds"); }
+    }
   }, 250);
+
+  /* ---------- "Your turn" pop-up when you've left the game screen ---------- */
+  const baseTitle = document.title;
+  const gameHidden = () => !!A.view || D.mode === "daily";
+  setInterval(() => {
+    const el = document.getElementById("turnAlert");
+    const g = S.room?.game;
+    const mine = !!g && S.room.status === "playing" && g.phase === "turn" && g.order[g.turn] === S.you;
+    const left = mine ? Math.max(0, g.turnEndsAt - (Date.now() + S.offset)) : 0;
+    const show = mine && left > 0 && gameHidden();
+    if (el) {
+      el.hidden = !show;
+      if (show) {
+        document.getElementById("taSecs").textContent = Math.ceil(left / 1000) + "s";
+        el.classList.toggle("low", left < 6000);
+        const bar = document.getElementById("taBar");
+        if (bar) bar.style.width = (left / TURN_MS * 100) + "%";
+      }
+    }
+    // In a background tab, the tab title shows the countdown instead.
+    const t = mine && left > 0 && document.hidden ? `Your turn! ${Math.ceil(left / 1000)}s · ${baseTitle}` : baseTitle;
+    if (document.title !== t) document.title = t;
+  }, 250);
+  document.getElementById("taBack")?.addEventListener("click", () => {
+    A.view = null; D.mode = null; D.last = null;
+    try { history.replaceState(null, "", "#" + S.code); } catch {}
+    window.scrollTo(0, 0);
+    render();
+    document.getElementById("guess")?.focus();
+  });
 
   /* ---------- Rendering ---------- */
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -126,6 +183,13 @@
   const safeImage = url => (typeof url === "string" && /^https?:\/\/[^\s"'()<>\\{}]+$/i.test(url) ? url : null);
   const imgStyle = url => (safeImage(url) ? `--img:url(&quot;${esc(url)}&quot;);` : "");
   const imgClass = url => (safeImage(url) ? " has-img" : "");
+  // Account players' names link to their profile. Guests (ids not starting with "u_") stay plain text.
+  const accountId = pid => (typeof pid === "string" && /^u_[0-9a-f]{12}$/.test(pid) ? pid.slice(2) : null);
+  const nameLink = (pid, name) => {
+    const id = accountId(pid);
+    return id ? `<a class="plink" href="#player-${id}" data-player="${id}">${esc(name)}</a>` : esc(name);
+  };
+  const linkOf = pid => nameLink(pid, nameOf(pid));
   const playerList = () => S.room?.players ?? [];
   const nameOf = id => playerList().find(p => p.id === id)?.name || "Player";
   function colorOf(id) {
@@ -145,7 +209,8 @@
     const focusId = document.activeElement?.id;
     const draft = document.getElementById("guess")?.value;
     const typed = { nm: document.getElementById("nm")?.value, jc: document.getElementById("jc")?.value, dnm: document.getElementById("dnm")?.value, danswer: document.getElementById("danswer")?.value, au: document.getElementById("au")?.value, fname: document.getElementById("fname")?.value };
-    if (A.view === "login" && !A.user) app.innerHTML = viewLogin();
+    if (A.view === "player") app.innerHTML = viewProfile();
+    else if (A.view === "login" && !A.user) app.innerHTML = viewLogin();
     else if (A.view === "account" || (A.view === "login" && A.user)) app.innerHTML = viewAccount();
     else if (D.mode === "daily") app.innerHTML = viewDaily();
     else if (!S.code || !S.room) app.innerHTML = viewStart();
@@ -162,6 +227,7 @@
     wire();
     wireDaily();
     wireAuth();
+    wireProfile();
   }
 
   function viewStart() {
@@ -178,10 +244,13 @@
       <section class="panel">
         <h2>How to play</h2>
         <ul class="rules">
-          <li>Each round is a question with a hidden list of answers, like "Name a grandmaster contest map".</li>
-          <li>In singleplayer, try to name the most obscure answer! There are 5 rounds.</li>
-          <li>In multiplayer, each player takes turns. You have ${TURN_MS / 1000} seconds to give an answer nobody has said yet this round.</li>
-          <li>Run out of time and you lose one of your 3 hearts. The last player with hearts left wins.</li>
+          <li>Each round is a question with a hidden list of answers, like "Name a dog breed".</li>
+          <li>Take turns. You have ${TURN_MS / 1000} seconds to give an answer nobody has said yet this round.</li>
+          <li>Wrong answers don't cost anything, so keep guessing until the clock runs out.</li>
+          <li>Run out of time and you lose one of your 3 hearts and sit out the rest of the round.</li>
+          <li>After the 2nd heart is lost in a round, play continues until it gets back to whoever started the round. Then a new question begins and everyone is back in.</li>
+          <li>If only one player is left in a round, their next correct answer ends it.</li>
+          <li>The last player with hearts left wins.</li>
         </ul>
       </section>
     </div>`;
@@ -196,7 +265,7 @@
         <div class="row"><span class="code">${esc(r.code)}</span><button class="ghost" id="copy">Copy invite link</button></div>
         <p class="mode-note">Send friends this link: <span id="linkTxt">${esc(link)}</span></p>
         <p class="label">Players (${r.players.length}/6)</p>
-        <ul class="players">${r.players.map(p => `<li><span class="dot" style="background:${colorOf(p.id)}"></span><span class="pname">${esc(p.name)}${p.id === S.you ? " (you)" : ""}${r.host === p.id ? " · host" : ""}${p.connected ? "" : " · reconnecting"}</span><span></span><span></span></li>`).join("")}</ul>
+        <ul class="players">${r.players.map(p => `<li><span class="dot" style="background:${colorOf(p.id)}"></span><span class="pname">${nameLink(p.id, p.name)}${p.id === S.you ? " (you)" : ""}${r.host === p.id ? " · host" : ""}${p.connected ? "" : " · reconnecting"}</span><span></span><span></span></li>`).join("")}</ul>
         <div class="row">
           ${isHost ? `<button id="start">Start game</button>` : `<p class="mode-note">Waiting for the host to start.</p>`}
           <button class="ghost" id="leave">Leave</button>
@@ -215,16 +284,16 @@
     const now = Date.now() + S.offset;
     const left = Math.max(0, g.turnEndsAt - now);
     const heartRow = id => `${"♥".repeat(Math.max(0, g.hearts[id]))}<span class="lost">${"♥".repeat(Math.max(0, r.hearts - g.hearts[id]))}</span>`;
-    const chips = list => list.map(s => `<li class="said${imgClass(s.image)}" style="--pc:${colorOf(s.pid)};${imgStyle(s.image)}"><span>${esc(s.text)}</span><small>${esc(nameOf(s.pid))}</small></li>`).join("");
+    const chips = list => list.map(s => `<li class="said${imgClass(s.image)}" style="--pc:${colorOf(s.pid)};${imgStyle(s.image)}"><span>${esc(s.text)}</span><small>${linkOf(s.pid)}</small></li>`).join("");
     const missedChips = list => list.map(m => `<li class="chip t-${m.tier}${imgClass(m.image)}" style="${imgStyle(m.image)}">${esc(m.text)}</li>`).join("");
 
     let main;
     if (phase === "turn") {
       main = `<section class="panel mq">
-        <div class="mq-head"><span class="label">Round ${g.roundNo}</span><span class="label">Started by ${esc(nameOf(round.starter))} · ${Math.min(round.losses, 2)} of 2 hearts lost</span></div>
+        <div class="mq-head"><span class="label">Round ${g.roundNo}</span><span class="label">Started by ${linkOf(round.starter)} · ${Math.min(round.losses, 2)} of 2 hearts lost</span></div>
         <h2 class="dq-text">${esc(round.question)}</h2>
         <div class="turnline">
-          <span class="turn-name" style="color:${colorOf(cur)}">${myTurn ? "Your turn" : esc(nameOf(cur)) + "'s turn"}</span>
+          <span class="turn-name" style="color:${colorOf(cur)}">${myTurn ? "Your turn" : linkOf(cur) + "'s turn"}</span>
           <span class="secs" id="secs">${Math.ceil(left / 1000)}s</span>
         </div>
         <div class="timer"><i id="timerBar" style="width:${left / TURN_MS * 100}%"></i></div>
@@ -244,7 +313,7 @@
       const until = Math.max(0, Math.ceil((g.nextRoundAt - now) / 1000));
       main = `<section class="panel mq">
         ${over ? `<p class="label">Game over</p>
-          <div class="winner">${g.winner ? esc(nameOf(g.winner)) + " wins" : g.order.length === 1 ? `You made it to round ${g.roundNo}` : "No one is left"}</div>
+          <div class="winner">${g.winner ? linkOf(g.winner) + " wins" : g.order.length === 1 ? `You made it to round ${g.roundNo}` : "No one is left"}</div>
           <div class="row">${isHost ? `<button id="again">Back to lobby</button>` : `<p class="mode-note">The host can start a new game.</p>`}<button class="ghost" id="leave">Leave room</button></div>`
         : `<div class="mq-head"><span class="label">Round ${lr?.roundNo ?? g.roundNo} over</span><span class="label">Next question in <span id="nextIn">${until}</span>s</span></div>`}
         ${lr ? `<h2 class="dq-text">${esc(lr.question)}</h2>
@@ -265,7 +334,7 @@
           <p class="label">Players</p>
           <ul class="players hearts">${g.order.map(id => `<li class="${phase === "turn" && id === cur ? "now" : ""} ${g.hearts[id] <= 0 ? "out" : ""} ${phase === "turn" && round.out.includes(id) && g.hearts[id] > 0 ? "sitting" : ""}">
             <span class="dot" style="background:${colorOf(id)}"></span>
-            <span class="pname">${esc(nameOf(id))}${id === S.you ? " (you)" : ""}${statusOf(id) ? `<small> · ${statusOf(id)}</small>` : ""}${phase === "turn" && round.starter === id ? `<small> · started</small>` : ""}</span>
+            <span class="pname">${linkOf(id)}${id === S.you ? " (you)" : ""}${statusOf(id) ? `<small> · ${statusOf(id)}</small>` : ""}${phase === "turn" && round.starter === id ? `<small> · started</small>` : ""}</span>
             <span class="lives" aria-label="${g.hearts[id]} hearts">${heartRow(id)}</span></li>`).join("")}</ul>
         </section>
         <section class="panel">
@@ -383,7 +452,7 @@
 
   function viewDaily() {
     const st = D.dstate, phase = dailyPhase();
-    const head = st ? `<div class="daily-bar"><button class="ghost" id="dback">Back</button><span class="label">Daily #${st.day}</span><span class="dtotal">${st.total}<small> / ${maxScore()}</small></span></div>` : "";
+    const head = st ? `<div class="daily-bar"><button class="ghost" id="dback">Back</button><span class="label">Daily #${st.day}</span><span class="dtotal"><span id="dtotalNum">${D.anim && !D.anim.done ? st.total - D.anim.target + D.anim.value : st.total}</span><small> / ${maxScore()}</small></span></div>` : "";
     let body = "";
     if (phase === "loading") body = `<section class="panel"><p class="mode-note">Loading…</p></section>`;
     else if (phase === "intro") body = viewDailyCard();
@@ -403,9 +472,10 @@
       </section>`;
     } else if (phase === "result") {
       const r = D.last, t = tierOf(r.tier), last = st.results.length >= st.perDay;
-      body = `<section class="panel dres ${t ? "t-" + t.key : "miss"}">
+      const counting = D.anim && D.anim.key === st.results.length && !D.anim.done;
+      body = `<section class="panel dres ${t ? "t-" + t.key : "miss"}${counting ? " counting" : ""}">
         <p class="label">Question ${st.results.length} of ${st.perDay}</p>
-        <div class="dres-pts">${t ? "+" + t.points : "0"}</div>
+        <div class="dres-pts" id="dpts">${t ? "+" + (counting ? D.anim.value : t.points) : "0"}</div>
         <div class="dres-tier">${t ? esc(t.name) : r.timedOut ? "Time's up" : "Not on the list"}</div>
         ${t && safeImage(r.image) ? `<div class="dres-answer has-img" style="${imgStyle(r.image)}">${esc(r.answer)}</div>` : ""}
         <p class="mode-note">${r.text ? `You answered “${esc(r.text)}”${t && r.answer && r.answer.toLowerCase() !== r.text.toLowerCase() ? `, counted as “${esc(r.answer)}”` : ""}.` : "You didn't answer in time."}</p>
@@ -416,8 +486,8 @@
         const t = tierOf(r.tier);
         return `<li><span class="dsum-q">${i + 1}. ${esc(r.question)}</span><span class="dsum-a">${r.text ? (t && safeImage(r.image) ? `<span class="answer-img has-img" style="${imgStyle(r.image)}">${esc(r.answer)}</span>` : esc(r.answer || r.text)) : "No answer"}</span><span class="chip ${t ? "t-" + t.key : "miss"}">${t ? esc(t.name) : "Miss"}</span><span class="dsum-p">${r.points}</span></li>`;
       }).join("");
-      const lbRows = list => list.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${esc(e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
-      const lb = st.leaderboard.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${esc(e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
+      const lbRows = list => list.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${nameLink(e.id, e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
+      const lb = st.leaderboard.map(e => `<li class="${e.id === st.you ? "me" : ""}"><span class="rank">${e.rank}</span><span class="pname">${nameLink(e.id, e.name)}${e.id === st.you ? " (you)" : ""}</span><span class="score">${e.score}</span></li>`).join("");
       body = `<div class="dsum">
         <section class="panel">
           <p class="label">Today's score</p>
@@ -464,11 +534,40 @@
   async function dailySubmit(text) {
     if (D.busy || !D.dstate?.current) return;
     D.busy = true; D.error = ""; render();
+    if (text) window.Sfx?.play("submit");
     const r = await api("answer", { text, name: savedName });
     D.busy = false;
     D.last = r.state?.last ?? null;
     if (!r.ok && !D.last) D.error = r.error;
+    if (D.last) startCount(D.last);
     render();
+  }
+
+  /** Counts the points up from 0 over about 3 seconds, then reveals the tier. A 0 just shows 0. */
+  const COUNT_MS = 3000;
+  function startCount(result) {
+    const key = D.dstate.results.length, target = result.points;
+    if (!target) { D.anim = null; window.Sfx?.play("miss"); return; }
+    const anim = D.anim = { key, target, value: 0, done: false, start: performance.now(), lastTick: 0, lastVal: 0 };
+    const step = now => {
+      if (D.anim !== anim || anim.done) return;
+      const p = Math.min(1, (now - anim.start) / COUNT_MS);
+      const eased = 1 - Math.pow(1 - p, 3); // fast at first, slowing into the final number
+      anim.value = Math.round(target * eased);
+      const pts = document.getElementById("dpts"), tot = document.getElementById("dtotalNum");
+      if (pts) pts.textContent = "+" + anim.value;
+      if (tot) tot.textContent = D.dstate.total - target + anim.value;
+      if (anim.value !== anim.lastVal && now - anim.lastTick > 55) {
+        anim.lastTick = now; anim.lastVal = anim.value;
+        window.Sfx?.play("countTick", p);
+      }
+      if (p < 1) { requestAnimationFrame(step); return; }
+      anim.done = true;
+      document.querySelector(".dres")?.classList.remove("counting");
+      document.querySelector(".dres")?.classList.add("revealed");
+      window.Sfx?.play("tier_" + result.tier);
+    };
+    requestAnimationFrame(step);
   }
   function wireDaily() {
     on("dplay", "click", dailyStart);
@@ -551,11 +650,17 @@
     if (v === "account" && A.user) loadMe().then(render);
   }
 
+  const SPEAKER_ON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+  const SPEAKER_OFF = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+  function viewSoundButton() {
+    const m = window.Sfx?.muted;
+    return `<button class="ghost icon-btn" id="sfxToggle" aria-pressed="${!m}" aria-label="${m ? "Turn sound on" : "Turn sound off"}" title="${m ? "Sound is off" : "Sound is on"}">${m ? SPEAKER_OFF : SPEAKER_ON}</button>`;
+  }
   function viewAccountButton() {
-    if (!A.loaded) return "";
-    return A.user
+    if (!A.loaded) return viewSoundButton();
+    return viewSoundButton() + (A.user
       ? `<button class="ghost acct-btn" id="openAccount" aria-label="Your account">${esc(A.user.displayName)}</button>`
-      : `<button class="ghost acct-btn" id="openLogin">Log in</button>`;
+      : `<button class="ghost acct-btn" id="openLogin">Log in</button>`);
   }
 
   function viewLogin() {
@@ -589,7 +694,7 @@
     const top = u.topScores.length
       ? `<ol class="top5">${u.topScores.map((s, i) => `<li><span class="rank">${i + 1}</span><span>Daily #${s.day}</span><span class="score">${s.score}<small> / 500</small></span></li>`).join("")}</ol>`
       : `<p class="mode-note">Finish a daily challenge to see your best scores here.</p>`;
-    const person = (f, buttons) => `<li><span class="pname">${esc(f.displayName)} <small>@${esc(f.username)}</small></span><span class="row">${buttons}</span></li>`;
+    const person = (f, buttons) => `<li><span class="pname">${nameLink("u_" + f.id, f.displayName)} <small>@${esc(f.username)}</small></span><span class="row">${buttons}</span></li>`;
     return `<div class="auth-wrap">
       <div class="daily-bar"><button class="ghost" id="authBack">Back</button><span class="label">Your account</span><button class="ghost" id="logout">Log out</button></div>
       ${A.note ? `<p class="flash ok">${esc(A.note)}</p>` : ""}
@@ -641,10 +746,83 @@
     </div>`;
   }
 
+  /* ---------- Player profiles ---------- */
+  // P.id is the profile being viewed; P.data is what the server returned for it.
+  const P = { id: null, data: null, error: "", note: "", loading: false, back: null };
+  async function loadProfile(id) {
+    P.loading = true; P.error = ""; render();
+    try {
+      const r = await (await fetch("/api/profile", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })).json();
+      if (P.id !== id) return; // they've moved on to another profile
+      P.data = r.ok ? r.profile : null;
+      if (!r.ok) P.error = r.error;
+    } catch { P.error = "Couldn't reach the server. Check your connection and try again."; }
+    P.loading = false;
+    render();
+  }
+  function openProfile(id) {
+    if (A.user && id === A.user.id) return openView("account");
+    if (A.view !== "player") P.back = A.view; // where Back returns to: your account page, or the game/home
+    P.id = id; P.data = null; P.note = "";
+    A.view = "player";
+    try { history.replaceState(null, "", "#player-" + id); } catch {}
+    window.scrollTo(0, 0);
+    loadProfile(id);
+  }
+  function viewProfile() {
+    const pr = P.data;
+    const back = `<div class="daily-bar"><button class="ghost" id="authBack">Back</button><span class="label">Player profile</span></div>`;
+    if (!pr) return `<div class="auth-wrap">${back}<section class="panel"><p class="${P.error ? "err" : "mode-note"}">${esc(P.error || "Loading…")}</p></section></div>`;
+    const actions = {
+      guest: `<p class="mode-note"><a href="#login" id="profileLogin">Log in</a> to add ${esc(pr.displayName)} as a friend.</p>`,
+      none: `<button id="pAdd" data-username="${esc(pr.username)}">Add friend</button>`,
+      outgoing: `<span class="chip">Request sent</span><button class="ghost small" data-pdrop="${pr.id}">Cancel request</button>`,
+      incoming: `<span class="mode-note">${esc(pr.displayName)} sent you a friend request.</span><button class="small" data-paccept="${pr.id}">Accept</button><button class="ghost small" data-pdrop="${pr.id}">Decline</button>`,
+      friend: `<span class="chip t-refill">Friends</span>`,
+    }[pr.relation] || "";
+    const top = pr.visible ? (pr.topScores.length
+      ? `<ol class="top5">${pr.topScores.map((sc, i) => `<li><span class="rank">${i + 1}</span><span>Daily #${sc.day}</span><span class="score">${sc.score}<small> / 500</small></span></li>`).join("")}</ol>`
+      : `<p class="mode-note">${esc(pr.displayName)} hasn't finished a daily challenge yet.</p>`) : "";
+    const friends = pr.visible ? (pr.friends.length
+      ? `<ul class="people">${pr.friends.map(f => `<li><span class="pname">${nameLink("u_" + f.id, f.displayName)} <small>@${esc(f.username)}</small></span>${A.user && f.id === A.user.id ? `<small class="mode-note">you</small>` : ""}</li>`).join("")}</ul>`
+      : `<p class="mode-note">No friends yet.</p>`) : "";
+    return `<div class="auth-wrap">
+      ${back}
+      <section class="panel profile-head">
+        <div><h2 class="profile-name">${esc(pr.displayName)}</h2><p class="mode-note">@${esc(pr.username)}</p></div>
+        <div class="row">${actions}</div>
+        ${P.note ? `<p class="flash ok">${esc(P.note)}</p>` : ""}${P.error ? `<p class="err">${esc(P.error)}</p>` : ""}
+      </section>
+      ${pr.visible ? `<div class="acct-grid">
+        <section class="panel"><p class="label">Top 5 daily scores</p>${top}<p class="mode-note">${pr.gamesPlayed} daily ${pr.gamesPlayed === 1 ? "challenge" : "challenges"} played.</p></section>
+        <section class="panel"><p class="label">Friends (${pr.friends.length})</p>${friends}</section>
+      </div>` : `<section class="panel"><p class="mode-note">Only ${esc(pr.displayName)}'s friends can see their top scores and friends list.</p></section>`}
+    </div>`;
+  }
+  function wireProfile() {
+    // Any player-name link, anywhere on the page, opens that player's profile.
+    document.querySelectorAll("a.plink[data-player]").forEach(a => a.addEventListener("click", e => {
+      e.preventDefault();
+      openProfile(a.dataset.player);
+    }));
+    on("profileLogin", "click", e => { e.preventDefault(); openView("login"); });
+    const act = async (pathName, body, note) => {
+      P.error = ""; P.note = "";
+      const r = await authApi(pathName, body);
+      if (!r.ok) { P.error = r.error; render(); return; }
+      P.note = note;
+      await loadProfile(P.id);
+    };
+    on("pAdd", "click", e => act("/api/friends/request", { username: e.target.dataset.username }, "Friend request sent."));
+    document.querySelectorAll("[data-paccept]").forEach(b => b.addEventListener("click", () => act("/api/friends/accept", { id: b.dataset.paccept }, "You're now friends.")));
+    document.querySelectorAll("[data-pdrop]").forEach(b => b.addEventListener("click", () => act("/api/friends/remove", { id: b.dataset.pdrop }, "")));
+  }
+
   function wireAuth() {
     on("openLogin", "click", () => openView("login"));
+    on("sfxToggle", "click", () => { window.Sfx?.setMuted(!window.Sfx.muted); render(); });
     on("openAccount", "click", () => openView("account"));
-    on("authBack", "click", () => openView(null));
+    on("authBack", "click", () => openView(A.view === "player" ? P.back : null));
     on("tabLogin", "click", () => { A.tab = "login"; A.error = ""; render(); });
     on("tabRegister", "click", () => { A.tab = "register"; A.error = ""; render(); });
     on("authForm", "submit", async e => {
@@ -721,6 +899,8 @@
     const err = params.get("auth_error");
     const h = location.hash.slice(1);
     if (h === "login" || h === "account") A.view = h;
+    const pm = h.match(/^player-([0-9a-f]{12})$/);
+    if (pm) setTimeout(() => openProfile(pm[1]), 0);
     if (err) {
       A.error = AUTH_ERRORS[err] || "Login failed. Try again.";
       try { history.replaceState(null, "", location.pathname + location.hash); } catch {}
@@ -729,6 +909,8 @@
   window.addEventListener("hashchange", () => {
     const h = location.hash.slice(1);
     if ((h === "login" || h === "account") && A.view !== h) { A.view = h; render(); }
+    const pm = h.match(/^player-([0-9a-f]{12})$/);
+    if (pm && P.id !== pm[1]) openProfile(pm[1]);
   });
   loadMe().then(async () => { if (A.user) savedName = A.user.displayName; render(); });
 
