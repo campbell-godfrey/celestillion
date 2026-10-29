@@ -178,13 +178,10 @@
       <section class="panel">
         <h2>How to play</h2>
         <ul class="rules">
-          <li>Each round is a question with a hidden list of answers, like "Name a dog breed".</li>
-          <li>Take turns. You have ${TURN_MS / 1000} seconds to give an answer nobody has said yet this round.</li>
-          <li>Wrong answers don't cost anything, so keep guessing until the clock runs out.</li>
-          <li>Run out of time and you lose one of your 3 hearts and sit out the rest of the round.</li>
-          <li>After the 2nd heart is lost in a round, play continues until it gets back to whoever started the round. Then a new question begins and everyone is back in.</li>
-          <li>If only one player is left in a round, their next correct answer ends it.</li>
-          <li>The last player with hearts left wins.</li>
+          <li>Each round is a question with a hidden list of answers, like "Name a grandmaster contest map".</li>
+          <li>In singleplayer, try to name the most obscure answer! There are 5 rounds.</li>
+          <li>In multiplayer, each player takes turns. You have ${TURN_MS / 1000} seconds to give an answer nobody has said yet this round.</li>
+          <li>Run out of time and you lose one of your 3 hearts. The last player with hearts left wins.</li>
         </ul>
       </section>
     </div>`;
